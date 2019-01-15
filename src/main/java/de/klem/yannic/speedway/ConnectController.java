@@ -1,13 +1,14 @@
 package de.klem.yannic.speedway;
 
 import de.klem.yannic.speedway.arduino.Arduino;
+import de.klem.yannic.speedway.arduino.ArduinoSerial;
 import de.klem.yannic.speedway.arduino.ConnectedArduino;
 import de.klem.yannic.speedway.measure.LapTimer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -15,6 +16,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 class ConnectController {
@@ -46,41 +48,51 @@ class ConnectController {
         ((ImageView) disconnectedIcon).setFitHeight(25);
     }
 
-    private final ComboBox<String> portSelector;
     private final Button connectButton;
 
-    ConnectController(final ComboBox<String> portSelector, final Button connectButton) {
+    ConnectController(final Button connectButton) {
         this.connectButton = connectButton;
-        this.portSelector = portSelector;
-        setDisconnected(new Arduino());
-    }
-
-    private void setConnected(final ConnectedArduino arduino) {
-        connectButton.setText("Arduino trennen");
-        connectButton.setGraphic(connectedIcon);
-        connectButton.setOnAction(new DisconnectHandler(arduino));
-        connectButton.setDisable(false);
-    }
-
-    private void setDisconnected(final Arduino arduino) {
-        connectButton.setText("Arduino verbinden");
-        connectButton.setGraphic(disconnectedIcon);
-        connectButton.setOnAction(new ConnectHandler(arduino));
-        connectButton.setDisable(false);
-    }
-
-    private void setConnecting() {
-        connectButton.setText("Verbinde...");
-        connectButton.setGraphic(loadingIcon);
-        connectButton.setOnAction(event -> {
-            //Do Nothing
+        CompletableFuture<Void> disconnected = setDisconnected(new Arduino());
+        disconnected.thenAccept((voidValue) -> {
+            this.connectButton.fire();
         });
-        connectButton.setDisable(true);
     }
 
-    void refreshPorts() {
-        List<String> availablePorts = Arduino.SerialFactory.getAvailablePorts();
-        portSelector.getItems().addAll(availablePorts);
+    private CompletableFuture<Void> setConnected(final ConnectedArduino arduino) {
+        CompletableFuture<Void> connectedFuture = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            connectButton.setText("Arduino trennen");
+            connectButton.setGraphic(connectedIcon);
+            connectButton.setOnAction(new DisconnectHandler(arduino));
+            connectButton.setDisable(false);
+            connectedFuture.complete(null);
+        });
+        return connectedFuture;
+    }
+
+    private CompletableFuture<Void> setDisconnected(final Arduino arduino) {
+        CompletableFuture<Void> disconnectedFuture = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            connectButton.setText("Arduino verbinden");
+            connectButton.setGraphic(disconnectedIcon);
+            connectButton.setOnAction(new ConnectHandler(arduino));
+            connectButton.setDisable(false);
+            disconnectedFuture.complete(null);
+        });
+        return disconnectedFuture;
+    }
+
+    private CompletableFuture<Void> setConnecting() {
+        CompletableFuture<Void> connectingFuture = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            connectButton.setText("Verbinde...");
+            connectButton.setGraphic(loadingIcon);
+            connectButton.setOnAction(event -> {
+                //Do Nothing
+            });
+            connectingFuture.complete(null);
+        });
+        return connectingFuture;
     }
 
     private class DisconnectHandler implements EventHandler<ActionEvent> {
@@ -93,6 +105,11 @@ class ConnectController {
 
         @Override
         public void handle(ActionEvent event) {
+            connectButton.setDisable(true);
+            new Thread(this::disconnectFromArduino).start();
+        }
+
+        private void disconnectFromArduino() {
             arduino.disconnect();
             setDisconnected(new Arduino());
         }
@@ -108,20 +125,37 @@ class ConnectController {
 
         @Override
         public void handle(ActionEvent event) {
-            LapTimer lapTimerImpl = new LapTimer(lapDuration ->
-                    logger.info(String.format("Lap finished in %f seconds.", lapDuration.toMillis() / 1000.0)));
-            String selectedPort = portSelector.getSelectionModel().getSelectedItem();
+            connectButton.setDisable(true);
+            new Thread(this::connectToArduino).start();
+        }
 
+        private void connectToArduino() {
             setConnecting();
-            Optional<ConnectedArduino> connectedArduinoOpt = arduino.connect(selectedPort);
+            Optional<ConnectedArduino> connectedArduinoOpt = performConnecting();
+
             if (connectedArduinoOpt.isPresent()) {
+                logger.info("Connected to Arduino.");
+                LapTimer lapTimerImpl = new LapTimer(lapDuration ->
+                        logger.info(String.format("Lap finished in %f seconds.", lapDuration.toMillis() / 1000.0)));
                 ConnectedArduino connectedArduino = connectedArduinoOpt.get();
                 connectedArduino.onLapTick(lapTimerImpl);
                 setConnected(connectedArduino);
             } else {
+                logger.info("Could not connect to Arduino.");
                 setDisconnected(arduino);
             }
+        }
 
+        private Optional<ConnectedArduino> performConnecting() {
+            List<String> availablePorts = ArduinoSerial.getAvailablePorts();
+            for (String port : availablePorts) {
+                Optional<ConnectedArduino> connectedArduino = arduino.connect(port);
+
+                if (connectedArduino.isPresent()) {
+                    return connectedArduino;
+                }
+            }
+            return Optional.empty();
         }
     }
 }

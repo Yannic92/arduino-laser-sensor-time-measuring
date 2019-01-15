@@ -19,6 +19,7 @@ public class LapTimer implements LapTickHandler {
         } else {
             Duration lapDuration = Duration.between(lastTick, timeOfTick);
             lapFinishedHandler.lapFinished(lapDuration);
+            lastTick = timeOfTick;
         }
     }
 }

@@ -1,5 +1,7 @@
 package de.klem.yannic.speedway;
 
+import de.klem.yannic.speedway.driver.NewDriverDialog;
+import de.klem.yannic.speedway.timetable.TimeTable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -12,22 +14,22 @@ public class Controller {
     private TableView driverTable;
 
     @FXML
-    private ComboBox<String> portSelector;
-
-    @FXML
     private Button connectButton;
 
     private ConnectController connectController;
 
     @FXML
     private void initialize() {
-        this.connectController = new ConnectController(portSelector, connectButton);
-        refreshPorts();
-        this.portSelector.getSelectionModel().selectFirst();
+        this.connectController = new ConnectController(connectButton);
     }
 
     @FXML
-    private void refreshPorts() {
-        this.connectController.refreshPorts();
+    private void openNewTimeTable() {
+        new TimeTable();
+    }
+
+    @FXML
+    private void openNewDriverDialog() {
+        new NewDriverDialog();
     }
 }

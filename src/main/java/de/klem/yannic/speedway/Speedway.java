@@ -12,10 +12,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.util.Objects;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 public class Speedway extends Application {
 
@@ -28,12 +27,10 @@ public class Speedway extends Application {
         }
     }
 
-    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         URL fxmlLocation = getClass().getClassLoader().getResource("speedway.fxml");
-        Parent root = FXMLLoader.load(fxmlLocation);
+        Parent root = FXMLLoader.load(Objects.requireNonNull(fxmlLocation));
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
 
@@ -43,8 +40,6 @@ public class Speedway extends Application {
         primaryStage.setY(bounds.getMinY());
         primaryStage.setWidth(bounds.getWidth());
         primaryStage.setHeight(bounds.getHeight());
-        String style = getClass().getClassLoader().getResource("style.css").toExternalForm();
-        primaryStage.getScene().getStylesheets().add(style);
         primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("go-kart.png")));
         primaryStage.show();
     }

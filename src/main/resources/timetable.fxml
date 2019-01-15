@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="574.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.timetable.TimeTableController">
+   <content>
+      <TableView fx:id="driverTable" prefWidth="826.0">
+        <columns>
+          <TableColumn maxWidth="252.00003051757812" minWidth="-1.0" prefWidth="97.0" text="Startnummer" />
+            <TableColumn minWidth="0.0" prefWidth="328.0000305175781" text="Name">
+                <columns>
+          <TableColumn minWidth="0.0" prefWidth="127.0" text="Vorname" />
+            <TableColumn prefWidth="105.00003051757812" text="Nachname" />
+                </columns>
+            </TableColumn>
+            <TableColumn prefWidth="146.99993896484375" text="Verein" />
+            <TableColumn prefWidth="425.0" text="1. Lauf">
+                <columns>
+                    <TableColumn prefWidth="102.99993896484375" text="Gefahrene Zeit" />
+                    <TableColumn prefWidth="326.0" text="Fehler">
+                        <columns>
+                            <TableColumn prefWidth="59.0" text="Pylonen" />
+                            <TableColumn prefWidth="63.0" text="Aufgaben" />
+                        </columns>
+                    </TableColumn>
+                </columns>
+            </TableColumn>
+            <TableColumn prefWidth="425.0" text="2. Lauf">
+                <columns>
+                    <TableColumn prefWidth="102.99993896484375" text="Gefahrene Zeit" />
+                    <TableColumn prefWidth="326.0" text="Fehler">
+                        <columns>
+                            <TableColumn prefWidth="59.0" text="Pylonen" />
+                            <TableColumn prefWidth="63.0" text="Aufgaben" />
+                        </columns>
+                    </TableColumn>
+                </columns>
+            </TableColumn>
+            <TableColumn prefWidth="132.0" text="Gesamtzeit" />
+            <TableColumn prefWidth="43.0" text="Platz" />
+            <TableColumn prefWidth="50.0" text="Punkte" />
+        </columns>
+      </TableView>
+   </content>
+</ScrollPane>
