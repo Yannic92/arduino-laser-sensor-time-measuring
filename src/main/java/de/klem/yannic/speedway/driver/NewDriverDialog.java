@@ -1,33 +1,33 @@
 package de.klem.yannic.speedway.driver;
 
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
+import de.klem.yannic.speedway.ui.SpeedwayStage;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Screen;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
 
-public class NewDriverDialog {
+public class NewDriverDialog extends SpeedwayStage {
 
-    public NewDriverDialog() {
-        URL fxmlLocation = getClass().getClassLoader().getResource("fxml/newDriver.fxml");
-        try {
-            Parent root = FXMLLoader.load(fxmlLocation);
-            Stage stage = new Stage();
-            Screen screen = Screen.getPrimary();
-            Rectangle2D bounds = screen.getVisualBounds();
+    public NewDriverDialog(final Parent parent, final ObservableList<Driver> driversList) throws IOException {
+        super(new Stage(), "fxml/newDriver.fxml", "Neuer Fahrer", "icons/driver.png");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(parent.getScene().getWindow());
+        stage.show();
+        ((NewDriverDialogController) controller).setDriversList(driversList);
 
-            stage.setTitle("Neuer Fahrer");
-            stage.setScene(new Scene(root, 250, 371));
-            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("icons/driver.png"))));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+            if (KeyCode.ESCAPE == event.getCode()) {
+                stage.close();
+            }
+        });
+    }
+
+    @Override
+    protected void exit() {
+        // No Action required;
     }
 }

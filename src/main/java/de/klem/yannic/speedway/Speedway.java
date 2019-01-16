@@ -28,7 +28,6 @@ public class Speedway extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL resource = getClass().getClassLoader().getResource("fxml/speedway.fxml");
         new MainView(primaryStage);
     }
 

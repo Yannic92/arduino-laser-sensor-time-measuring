@@ -22,7 +22,8 @@
                   <Label layoutX="20.0" layoutY="180.0" text="Startnummer" />
                   <TextField fx:id="classInput" layoutX="20.0" layoutY="250.0" onKeyReleased="#enableCreateButton" prefWidth="210.0" />
                   <Label layoutX="20.0" layoutY="230.0" text="Klasse" />
-                  <Button fx:id="createButton" disable="true" layoutX="169.0" layoutY="297.0" mnemonicParsing="false" text="Erstellen" />
+                  <Button fx:id="createButton" disable="true" layoutX="20.0" layoutY="295.0" mnemonicParsing="false" onAction="#addDriver" text="Erstellen" />
+                  <Button fx:id="createAndCloseButton" disable="true" layoutX="92.0" layoutY="295.0" mnemonicParsing="false" onAction="#addDriverAndClose" text="Erstellen und schließen" />
                </children>
             </AnchorPane>
          </content></DialogPane>

@@ -38,20 +38,20 @@ public abstract class ConnectivityEvent extends Event {
         return this.source;
     }
 
-    public static class ConnectedEvent extends ConnectivityEvent {
+    private static class ConnectedEvent extends ConnectivityEvent {
         private ConnectedEvent(Arduino connectedArduino) {
             super(CONNECTED_TYPE, connectedArduino);
         }
     }
 
-    public static class DisconnectedEvent extends ConnectivityEvent {
+    private static class DisconnectedEvent extends ConnectivityEvent {
 
         private DisconnectedEvent(Arduino disconnectedArduino) {
             super(DISCONNECTED_TYPE, disconnectedArduino);
         }
     }
 
-    public static class ConnectingEvent extends ConnectivityEvent {
+    private static class ConnectingEvent extends ConnectivityEvent {
 
         private ConnectingEvent(Arduino connectingArduino) {
             super(CONNECTING_TYPE, connectingArduino);

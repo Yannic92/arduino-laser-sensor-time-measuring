@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="349.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.main.MainViewController">
+<VBox fx:id="mainViewRoot" prefHeight="349.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.main.MainViewController">
    <children>
       <SplitPane fx:id="topLevelSplitPane" dividerPositions="0.29797979797979796" prefHeight="42.0" prefWidth="959.0">
         <items>
@@ -51,10 +51,7 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <ScrollPane fitToHeight="true" fitToWidth="true" prefWidth="1635.0" VBox.vgrow="ALWAYS">
-         <content>
-         </content>
-      </ScrollPane>
+       <fx:include source="drivers.fxml" fx:id="drivers" VBox.vgrow="ALWAYS"/>
       <ToolBar fx:id="arduinoToolbar" layoutX="10.0" layoutY="10.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="0.0" prefWidth="1542.0">
          <items>
             <Button fx:id="connectButton" mnemonicParsing="false" prefHeight="33.0" prefWidth="149.0" text="Arduino verbinden">
