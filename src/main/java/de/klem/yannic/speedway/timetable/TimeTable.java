@@ -1,39 +1,23 @@
 package de.klem.yannic.speedway.timetable;
 
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Screen;
+import de.klem.yannic.speedway.ui.SpeedwayStage;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
 
-public class TimeTable {
+public class TimeTable extends SpeedwayStage {
 
-    public TimeTable() {
-        URL fxmlLocation = getClass().getClassLoader().getResource("timetable.fxml");
-        try {
-            Parent root = FXMLLoader.load(fxmlLocation);
-            Stage stage = new Stage();
-            Screen screen = Screen.getPrimary();
-            Rectangle2D bounds = screen.getVisualBounds();
+    public TimeTable() throws IOException {
+        super(new Stage(), "timetable.fxml", "Zeiten", "time.png");
+        maximize();
+//            String style = getClass().getClassLoader().getResource("style.css").toExternalForm();
+//            stage.getScene().getStylesheets().add(style);
 
-            stage.setTitle("Zeiten");
-            stage.setScene(new Scene(root, 1000, 800));
-            stage.setX(bounds.getMinX());
-            stage.setY(bounds.getMinY());
-            stage.setWidth(bounds.getWidth());
-            stage.setHeight(bounds.getHeight());
-            String style = getClass().getClassLoader().getResource("style.css").toExternalForm();
-            stage.getScene().getStylesheets().add(style);
-            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("time.png"))));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        stage.show();
+
+    }
+
+    @Override
+    protected void exit() {
     }
 }

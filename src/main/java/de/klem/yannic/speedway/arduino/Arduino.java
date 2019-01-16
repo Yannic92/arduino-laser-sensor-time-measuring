@@ -1,30 +1,85 @@
 package de.klem.yannic.speedway.arduino;
 
+import de.klem.yannic.speedway.arduino.event.ConnectivityEvent;
+import de.klem.yannic.speedway.async.AbstractObservable;
+import de.klem.yannic.speedway.measure.LapTickHandler;
+import javafx.event.Event;
+
 import java.lang.invoke.MethodHandles;
-import java.util.Optional;
+import java.time.Instant;
+import java.util.List;
+import java.util.Objects;
+import java.util.TooManyListenersException;
 import java.util.logging.Logger;
 
-public class Arduino {
+public class Arduino extends AbstractObservable<ConnectivityEvent> {
 
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
+    private static final Long secondsToLock = 5L;
+    private ArduinoSerial serial;
+    private Instant lastTick;
 
-    public Optional<ConnectedArduino> connect(final String port) {
-        final ArduinoSerial serial = ArduinoSerial.getSerial(port);
-        logger.info("Trying to connect to Arduino.");
-        boolean connected = serial.connect();
-        if (connected) {
-            Optional<ConnectedArduino> connectedArduino = performHandshake(serial);
-            if (connectedArduino.isPresent()) {
-                return connectedArduino;
-            } else {
-                serial.disconnect();
-            }
+    public boolean connect() {
+
+        emit(ConnectivityEvent.CONNECTING(this));
+
+        if (isConnected()) {
+            return true;
         }
 
-        return Optional.empty();
+        List<String> availablePorts = ArduinoSerial.getAvailablePorts();
+        for (String comPort : availablePorts) {
+            boolean connected = performConnect(comPort);
+            if (connected) {
+                emit(ConnectivityEvent.CONNECTED(this));
+                return true;
+            }
+        }
+        emit(ConnectivityEvent.DISCONNECTED(this));
+        return false;
+
+
     }
 
-    private Optional<ConnectedArduino> performHandshake(final ArduinoSerial serial) {
+    public boolean isConnected() {
+        return this.serial != null && this.serial.isConnected();
+    }
+
+    public void disconnect() {
+        logger.info("Disconnect from Arduino.");
+
+        if (!isConnected()) {
+            return;
+        }
+
+        this.serial.disconnect();
+        this.serial = null;
+        emit(ConnectivityEvent.DISCONNECTED(this));
+    }
+
+    private boolean performConnect(final String comPort) {
+
+        this.serial = ArduinoSerial.getSerial(comPort);
+
+        logger.info("Trying to connect to Arduino.");
+        boolean connected = this.serial.connect();
+
+        if (!connected) {
+            return false;
+        }
+        boolean handshakeSucceeded = performHandshake();
+
+        if (handshakeSucceeded) {
+            return true;
+        }
+
+        serial.disconnect();
+        this.serial = null;
+        return false;
+    }
+
+    private boolean performHandshake() {
+        Objects.requireNonNull(this.serial);
         logger.info("Performing handshake.");
 
         serial.clearInputStream();
@@ -33,7 +88,7 @@ public class Arduino {
         String waitingForHandshake = serial.readWithTimeout(serial, 23).orElse("");
 
         if (!"Waiting for Handshake\r\n".equals(waitingForHandshake)) {
-            return Optional.empty();
+            return false;
         }
 
         serial.write("Arduino\n");
@@ -41,12 +96,32 @@ public class Arduino {
         String uno = serial.readWithTimeout(serial, 5).orElse("");
 
         if (!"Uno\r\n".equals(uno)) {
-            return Optional.empty();
+            return false;
         }
 
         serial.write("Go\n");
 
         logger.info("Completed Handshake successfully.");
-        return Optional.of(new ConnectedArduino(serial));
+        return true;
+    }
+
+    public void onLapTick(final LapTickHandler lapTickHandler) {
+        try {
+            this.serial.addEventListener(serialPortEvent -> {
+                Instant now = Instant.now();
+                if (lastTick == null) {
+                    logger.info("First lap ticked");
+                    lastTick = now;
+                    lapTickHandler.tick(lastTick);
+                } else if (lastTick.isBefore(now.minusSeconds(secondsToLock))) {
+                    logger.info("Lap ticked");
+                    lastTick = now;
+                    lapTickHandler.tick(now);
+                }
+                this.serial.clearInputStream();
+            });
+        } catch (TooManyListenersException e) {
+            throw new TooManyListenersRuntimeException(e);
+        }
     }
 }

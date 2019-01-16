@@ -1,5 +1,6 @@
 package de.klem.yannic.speedway.arduino;
 
+import de.klem.yannic.speedway.Speedway;
 import gnu.io.NRSerialPort;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
-public class ArduinoSerial extends NRSerialPort {
+class ArduinoSerial extends NRSerialPort {
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
     private static final Integer baudRate = 9600;
     private final String port;
@@ -22,7 +23,7 @@ public class ArduinoSerial extends NRSerialPort {
         this.port = port;
     }
 
-    public static List<String> getAvailablePorts() {
+    static List<String> getAvailablePorts() {
         List<String> availablePorts = new ArrayList<>(NRSerialPort.getAvailableSerialPorts());
         Collections.sort(availablePorts);
         return availablePorts;
@@ -52,15 +53,14 @@ public class ArduinoSerial extends NRSerialPort {
     }
 
     Optional<String> readWithTimeout(final ArduinoSerial serial, final int numberOfExpectedBytes) {
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-        final Future<String> serialInputString = executor.submit(() -> performReading(serial, numberOfExpectedBytes));
+        final Future<String> serialInputString = Speedway.executor.submit(
+                () -> performReading(serial, numberOfExpectedBytes));
         try {
-            executor.shutdown();
             return Optional.of(serialInputString.get(5, TimeUnit.SECONDS));
         } catch (InterruptedException | TimeoutException | ExecutionException ex) {
-            serialInputString.cancel(true);
-            executor.shutdown();
             return Optional.empty();
+        } finally {
+            serialInputString.cancel(true);
         }
     }
 
@@ -70,6 +70,14 @@ public class ArduinoSerial extends NRSerialPort {
         InputStream inputStream = serial.getInputStream();
         while (inputStream.available() < numberOfExpectedBytes) {
             //Wait for available bytes
+            try {
+                Thread.sleep(100);
+                if (Speedway.executor.isShutdown()) {
+                    return "";
+                }
+            } catch (InterruptedException e) {
+                return "";
+            }
         }
         byte[] serialInputBytes = new byte[numberOfExpectedBytes];
         inputStream.read(serialInputBytes);
