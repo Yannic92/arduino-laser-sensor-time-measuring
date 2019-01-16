@@ -1,12 +1,13 @@
 package de.klem.yannic.speedway;
 
 
-import de.klem.yannic.speedway.overview.Overview;
+import de.klem.yannic.speedway.main.MainView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.LogManager;
@@ -27,7 +28,8 @@ public class Speedway extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        new Overview(primaryStage);
+        URL resource = getClass().getClassLoader().getResource("fxml/speedway.fxml");
+        new MainView(primaryStage);
     }
 
     public static void main(String[] args) {

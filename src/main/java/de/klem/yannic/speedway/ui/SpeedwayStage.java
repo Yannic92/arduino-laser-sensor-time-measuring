@@ -9,6 +9,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 
 public abstract class SpeedwayStage {
@@ -22,8 +23,9 @@ public abstract class SpeedwayStage {
         });
         this.stage.setTitle(title);
         this.stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(iconFile))));
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(fxmlFile));
+        URL fxmlFileUrl = getClass().getClassLoader().getResource(fxmlFile);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(fxmlFileUrl);
         Parent root = fxmlLoader.load();
         this.controller = fxmlLoader.getController();
         this.stage.setScene(new Scene(root));

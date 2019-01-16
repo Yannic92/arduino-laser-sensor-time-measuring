@@ -1,14 +1,14 @@
-package de.klem.yannic.speedway.overview;
+package de.klem.yannic.speedway.main;
 
 import de.klem.yannic.speedway.ui.SpeedwayStage;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Overview extends SpeedwayStage {
+public class MainView extends SpeedwayStage {
 
-    public Overview(final Stage primaryStage) throws IOException {
-        super(primaryStage, "speedway.fxml", "Speedway", "go-kart.png");
+    public MainView(final Stage primaryStage) throws IOException {
+        super(primaryStage, "fxml/speedway.fxml", "Speedway", "icons/go-kart.png");
         maximize();
         primaryStage.show();
     }

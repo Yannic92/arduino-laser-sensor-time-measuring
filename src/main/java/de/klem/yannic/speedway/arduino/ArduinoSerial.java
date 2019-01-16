@@ -44,8 +44,9 @@ class ArduinoSerial extends NRSerialPort {
     void clearInputStream() {
         InputStream inputStream = getInputStream();
         try {
-            while (inputStream.available() > 0) {
-                inputStream.read();
+            int availableBytes = inputStream.available();
+            if(availableBytes > 0) {
+                inputStream.read(new byte[availableBytes]);
             }
         } catch (IOException e) {
             // Do nothing

@@ -1,19 +1,20 @@
-package de.klem.yannic.speedway.overview.connect;
+package de.klem.yannic.speedway.main.toolbar;
 
 import de.klem.yannic.speedway.Speedway;
 import de.klem.yannic.speedway.arduino.Arduino;
 import de.klem.yannic.speedway.arduino.event.ConnectivityEvent;
-import de.klem.yannic.speedway.overview.OverviewController;
+import de.klem.yannic.speedway.main.MainViewController;
 import de.klem.yannic.speedway.ui.SpeedwayController;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.Objects;
 
-public class ConnectController implements SpeedwayController {
+public class ArduinoToolbarController implements SpeedwayController {
 
     private static final Node loadingIcon;
 
@@ -23,30 +24,31 @@ public class ConnectController implements SpeedwayController {
 
     static {
         loadingIcon = new ImageView(new Image(
-                Objects.requireNonNull(OverviewController.class.getClassLoader().getResourceAsStream("loading.png"))
+                Objects.requireNonNull(MainViewController.class.getClassLoader().getResourceAsStream("icons/loading.png"))
         ));
         ((ImageView) loadingIcon).setFitHeight(25);
         ((ImageView) loadingIcon).setFitWidth(25);
 
         connectedIcon = new ImageView(new Image(
-                Objects.requireNonNull(OverviewController.class.getClassLoader().getResourceAsStream("connected.png"))
+                Objects.requireNonNull(MainViewController.class.getClassLoader().getResourceAsStream("icons/connected.png"))
         ));
         ((ImageView) connectedIcon).setFitHeight(25);
         ((ImageView) connectedIcon).setFitWidth(25);
 
         disconnectedIcon = new ImageView(new Image(
-                Objects.requireNonNull(OverviewController.class.getClassLoader().getResourceAsStream("disconnected.png"))
+                Objects.requireNonNull(MainViewController.class.getClassLoader().getResourceAsStream("icons/disconnected.png"))
         ));
         ((ImageView) disconnectedIcon).setFitWidth(25);
         ((ImageView) disconnectedIcon).setFitHeight(25);
     }
 
     private final Button connectButton;
+
     private final Arduino arduino;
 
-    public ConnectController(final Arduino arduino, final Button connectButton) {
-        this.arduino = arduino;
+    public ArduinoToolbarController(final Arduino arduino, final ToolBar toolBar, final Button connectButton) {
         this.connectButton = connectButton;
+        this.arduino = arduino;
 
         arduino.addEventHandler(ConnectivityEvent.CONNECTED_TYPE, this::setConnected);
         arduino.addEventHandler(ConnectivityEvent.DISCONNECTED_TYPE, this::setDisconnected);
