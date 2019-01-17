@@ -9,7 +9,7 @@ import java.io.IOException;
 public class TimeTable extends SpeedwayStage {
 
     public TimeTable(final Parent parent) throws IOException {
-        super(new Stage(), "fxml/timetable.fxml", "Zeiten", "icons/time.png");
+        super(new Stage(), "views/timetable.fxml", "Zeiten", "icons/time.png");
         maximize();
 //            String style = getClass().getClassLoader().getResource("style.css").toExternalForm();
 //            stage.getScene().getStylesheets().add(style);
