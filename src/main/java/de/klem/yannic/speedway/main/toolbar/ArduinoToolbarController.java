@@ -6,13 +6,15 @@ import de.klem.yannic.speedway.arduino.event.ConnectivityEvent;
 import de.klem.yannic.speedway.main.MainViewController;
 import de.klem.yannic.speedway.ui.SpeedwayController;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class ArduinoToolbarController implements SpeedwayController {
 
@@ -42,20 +44,8 @@ public class ArduinoToolbarController implements SpeedwayController {
         ((ImageView) disconnectedIcon).setFitHeight(25);
     }
 
-    private final Button connectButton;
-
-    private final Arduino arduino;
-
-    public ArduinoToolbarController(final Arduino arduino, final ToolBar toolBar, final Button connectButton) {
-        this.connectButton = connectButton;
-        this.arduino = arduino;
-
-        arduino.addEventHandler(ConnectivityEvent.CONNECTED_TYPE, this::setConnected);
-        arduino.addEventHandler(ConnectivityEvent.DISCONNECTED_TYPE, this::setDisconnected);
-        arduino.addEventHandler(ConnectivityEvent.CONNECTING_TYPE, this::setConnecting);
-
-        Speedway.executor.submit(arduino::connect);
-    }
+    @FXML
+    private Button connectButton;
 
     private void setDisconnected(final ConnectivityEvent connectivityEvent) {
         Platform.runLater(() -> {
@@ -90,7 +80,13 @@ public class ArduinoToolbarController implements SpeedwayController {
     }
 
     @Override
-    public void exit() {
-        this.arduino.disconnect();
+    public void initialize(URL location, ResourceBundle resources) {
+        final Arduino arduino = Arduino.INSTANCE;
+
+        arduino.addEventHandler(ConnectivityEvent.CONNECTED_TYPE, this::setConnected);
+        arduino.addEventHandler(ConnectivityEvent.DISCONNECTED_TYPE, this::setDisconnected);
+        arduino.addEventHandler(ConnectivityEvent.CONNECTING_TYPE, this::setConnecting);
+
+        Speedway.executor.submit(arduino::connect);
     }
 }

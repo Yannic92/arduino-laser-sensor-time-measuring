@@ -1,6 +1,6 @@
 package de.klem.yannic.speedway.ui;
 
-public interface SpeedwayController {
+import javafx.fxml.Initializable;
 
-    void exit();
+public interface SpeedwayController extends Initializable {
 }

@@ -15,8 +15,6 @@ public class MainView extends SpeedwayStage {
 
     @Override
     protected void exit() {
-        controller.exit();
+
     }
-
-
 }

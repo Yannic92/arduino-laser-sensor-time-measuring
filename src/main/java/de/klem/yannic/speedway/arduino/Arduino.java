@@ -3,7 +3,6 @@ package de.klem.yannic.speedway.arduino;
 import de.klem.yannic.speedway.arduino.event.ConnectivityEvent;
 import de.klem.yannic.speedway.async.AbstractObservable;
 import de.klem.yannic.speedway.measure.LapTickHandler;
-import javafx.event.Event;
 
 import java.lang.invoke.MethodHandles;
 import java.time.Instant;
@@ -14,10 +13,14 @@ import java.util.logging.Logger;
 
 public class Arduino extends AbstractObservable<ConnectivityEvent> {
 
+    public static final Arduino INSTANCE = new Arduino();
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
     private static final Long secondsToLock = 5L;
     private ArduinoSerial serial;
     private Instant lastTick;
+
+    private Arduino() {
+    }
 
     public boolean connect() {
 

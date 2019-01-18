@@ -5,7 +5,6 @@ import de.klem.yannic.speedway.ui.TextFieldValidator;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class NewDriverDialogController implements SpeedwayController, Initializable {
+public class NewDriverDialogController implements SpeedwayController {
 
     private static final String START_NUMBER_NOT_UNIQUE = "Startnummer ist bereits vergeben.";
 
@@ -133,10 +132,5 @@ public class NewDriverDialogController implements SpeedwayController, Initializa
         allTextFields.forEach(TextInputControl::clear);
         lastNameInput.requestFocus();
         validators.forEach(TextFieldValidator::enable);
-    }
-
-    @Override
-    public void exit() {
-
     }
 }

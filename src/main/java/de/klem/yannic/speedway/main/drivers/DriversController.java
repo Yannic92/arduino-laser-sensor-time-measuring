@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class DriversController implements SpeedwayController, Initializable {
+public class DriversController implements SpeedwayController {
 
     @FXML
     private TableView<Driver> driversTable;
@@ -34,20 +34,7 @@ public class DriversController implements SpeedwayController, Initializable {
     @FXML
     private TableColumn<Driver, String> club;
 
-    private final ObservableList<Driver> driversList;
-
-    public DriversController() {
-        this.driversList = FXCollections.observableArrayList();
-    }
-
-    public ObservableList<Driver> getDriversList() {
-        return driversList;
-    }
-
-    @Override
-    public void exit() {
-
-    }
+    public static final ObservableList<Driver> DRIVERS = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,6 +44,6 @@ public class DriversController implements SpeedwayController, Initializable {
         driverClass.setCellValueFactory(new PropertyValueFactory<>("driverClass"));
         club.setCellValueFactory(new PropertyValueFactory<>("club"));
 
-        driversTable.setItems(driversList);
+        driversTable.setItems(DRIVERS);
     }
 }
