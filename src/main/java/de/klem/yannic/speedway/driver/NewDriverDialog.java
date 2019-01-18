@@ -16,7 +16,7 @@ public class NewDriverDialog extends SpeedwayStage {
         super(new Stage(), "views/newDriver/newDriver.fxml", "Neuer Fahrer", "icons/driver.png");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(parent.getScene().getWindow());
-        stage.resizableProperty().setValue(false);
+        stage.setMaxWidth(358);
         stage.show();
         ((NewDriverDialogController) controller).setDriversList(driversList);
 
