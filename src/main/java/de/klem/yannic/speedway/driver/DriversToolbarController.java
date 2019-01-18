@@ -25,7 +25,7 @@ public class DriversToolbarController implements SpeedwayController {
 
     @FXML
     private void openNewDriverDialog() throws IOException {
-        new NewDriverDialog(topLevelSplitPane.getParent(), DriversController.DRIVERS);
+        new NewDriverDialog(topLevelSplitPane.getParent());
     }
 
     @Override

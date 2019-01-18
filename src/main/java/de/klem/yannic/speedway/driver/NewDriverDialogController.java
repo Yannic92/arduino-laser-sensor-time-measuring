@@ -44,6 +44,8 @@ public class NewDriverDialogController implements SpeedwayController {
     private final List<TextField> allTextFields = new ArrayList<>();
     private final List<TextFieldValidator> validators = new ArrayList<>();
 
+    private static final ObservableList<Driver> driversList = Drivers.getInstance().getDriversList();
+
     private void setDisabledOfCreateButtons(final boolean disabled) {
         createButton.setDisable(disabled);
         createAndCloseButton.setDisable(disabled);
@@ -99,12 +101,6 @@ public class NewDriverDialogController implements SpeedwayController {
         return validators.stream().anyMatch(validator -> !validator.isValid());
     }
 
-    private ObservableList<Driver> driversList;
-
-    void setDriversList(ObservableList<Driver> driversList) {
-        this.driversList = driversList;
-    }
-
     @FXML
     private void addDriver() {
         addDriverToList();
@@ -123,7 +119,7 @@ public class NewDriverDialogController implements SpeedwayController {
         String startNumber = startNumberInput.getText();
         String driverClass = classInput.getText();
 
-        this.driversList.add(new Driver(firstName, lastName, club, startNumber, driverClass));
+        driversList.add(new Driver(firstName, lastName, club, startNumber, driverClass));
         reset();
     }
 

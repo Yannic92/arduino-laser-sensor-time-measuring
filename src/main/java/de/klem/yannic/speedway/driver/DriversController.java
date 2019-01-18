@@ -1,8 +1,6 @@
 package de.klem.yannic.speedway.driver;
 
 import de.klem.yannic.speedway.utils.ui.SpeedwayController;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -32,8 +30,6 @@ public class DriversController implements SpeedwayController {
     @FXML
     private TableColumn<Driver, String> club;
 
-    public static final ObservableList<Driver> DRIVERS = FXCollections.observableArrayList();
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -42,6 +38,6 @@ public class DriversController implements SpeedwayController {
         driverClass.setCellValueFactory(new PropertyValueFactory<>("driverClass"));
         club.setCellValueFactory(new PropertyValueFactory<>("club"));
 
-        driversTable.setItems(DRIVERS);
+        driversTable.setItems(Drivers.getInstance().getDriversList());
     }
 }
