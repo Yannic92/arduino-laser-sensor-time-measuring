@@ -6,7 +6,7 @@
 <SplitPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:id="topLevelSplitPane" dividerPositions="0.9038662486938349" prefHeight="42.0" prefWidth="959.0"
-           fx:controller="de.klem.yannic.speedway.main.toolbar.DriversToolbarController">
+           fx:controller="de.klem.yannic.speedway.driver.DriversToolbarController">
     <items>
         <ToolBar>
             <items>

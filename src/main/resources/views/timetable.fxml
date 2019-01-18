@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="574.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.timetable.TimeTableController">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="574.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.time.timetable.TimeTableController">
    <content>
       <TableView fx:id="driverTable" prefWidth="826.0">
         <columns>

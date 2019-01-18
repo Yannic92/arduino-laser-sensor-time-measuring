@@ -1,6 +1,6 @@
 package de.klem.yannic.speedway.driver;
 
-import de.klem.yannic.speedway.ui.SpeedwayStage;
+import de.klem.yannic.speedway.utils.ui.SpeedwayStage;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;

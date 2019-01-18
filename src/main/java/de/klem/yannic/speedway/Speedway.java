@@ -2,7 +2,6 @@ package de.klem.yannic.speedway;
 
 
 import de.klem.yannic.speedway.arduino.Arduino;
-import de.klem.yannic.speedway.main.MainView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

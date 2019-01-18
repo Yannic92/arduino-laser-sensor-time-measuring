@@ -1,8 +1,8 @@
 package de.klem.yannic.speedway.arduino;
 
 import de.klem.yannic.speedway.arduino.event.ConnectivityEvent;
-import de.klem.yannic.speedway.async.AbstractObservable;
-import de.klem.yannic.speedway.measure.LapTickHandler;
+import de.klem.yannic.speedway.utils.async.AbstractObservable;
+import de.klem.yannic.speedway.time.measure.LapTickHandler;
 
 import java.lang.invoke.MethodHandles;
 import java.time.Instant;
@@ -22,7 +22,7 @@ public class Arduino extends AbstractObservable<ConnectivityEvent> {
     private Arduino() {
     }
 
-    public boolean connect() {
+    boolean connect() {
 
         emit(ConnectivityEvent.CONNECTING(this));
 
@@ -44,7 +44,7 @@ public class Arduino extends AbstractObservable<ConnectivityEvent> {
 
     }
 
-    public boolean isConnected() {
+    private boolean isConnected() {
         return this.serial != null && this.serial.isConnected();
     }
 

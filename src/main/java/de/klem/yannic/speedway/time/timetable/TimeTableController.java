@@ -1,6 +1,6 @@
-package de.klem.yannic.speedway.timetable;
+package de.klem.yannic.speedway.time.timetable;
 
-import de.klem.yannic.speedway.ui.SpeedwayController;
+import de.klem.yannic.speedway.utils.ui.SpeedwayController;
 
 import java.net.URL;
 import java.util.ResourceBundle;

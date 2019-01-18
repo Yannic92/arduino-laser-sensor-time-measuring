@@ -1,11 +1,9 @@
-package de.klem.yannic.speedway.main.drivers;
+package de.klem.yannic.speedway.driver;
 
-import de.klem.yannic.speedway.driver.Driver;
-import de.klem.yannic.speedway.ui.SpeedwayController;
+import de.klem.yannic.speedway.utils.ui.SpeedwayController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;

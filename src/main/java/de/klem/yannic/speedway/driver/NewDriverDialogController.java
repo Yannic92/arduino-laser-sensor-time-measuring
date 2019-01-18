@@ -1,7 +1,7 @@
 package de.klem.yannic.speedway.driver;
 
-import de.klem.yannic.speedway.ui.SpeedwayController;
-import de.klem.yannic.speedway.ui.TextFieldValidator;
+import de.klem.yannic.speedway.utils.ui.SpeedwayController;
+import de.klem.yannic.speedway.utils.ui.TextFieldValidator;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

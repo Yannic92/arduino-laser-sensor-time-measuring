@@ -1,6 +1,6 @@
-package de.klem.yannic.speedway.timetable;
+package de.klem.yannic.speedway.time.timetable;
 
-import de.klem.yannic.speedway.ui.SpeedwayStage;
+import de.klem.yannic.speedway.utils.ui.SpeedwayStage;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 

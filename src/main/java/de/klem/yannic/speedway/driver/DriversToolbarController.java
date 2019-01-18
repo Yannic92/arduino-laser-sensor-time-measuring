@@ -1,9 +1,7 @@
-package de.klem.yannic.speedway.main.toolbar;
+package de.klem.yannic.speedway.driver;
 
-import de.klem.yannic.speedway.driver.NewDriverDialog;
-import de.klem.yannic.speedway.main.drivers.DriversController;
-import de.klem.yannic.speedway.timetable.TimeTable;
-import de.klem.yannic.speedway.ui.SpeedwayController;
+import de.klem.yannic.speedway.time.timetable.TimeTable;
+import de.klem.yannic.speedway.utils.ui.SpeedwayController;
 import javafx.fxml.FXML;
 import javafx.scene.control.SplitPane;
 

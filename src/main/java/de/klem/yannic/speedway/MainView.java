@@ -1,6 +1,6 @@
-package de.klem.yannic.speedway.main;
+package de.klem.yannic.speedway;
 
-import de.klem.yannic.speedway.ui.SpeedwayStage;
+import de.klem.yannic.speedway.utils.ui.SpeedwayStage;
 import javafx.stage.Stage;
 
 import java.io.IOException;

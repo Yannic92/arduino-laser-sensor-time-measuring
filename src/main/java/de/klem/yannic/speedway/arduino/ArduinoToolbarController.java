@@ -1,10 +1,9 @@
-package de.klem.yannic.speedway.main.toolbar;
+package de.klem.yannic.speedway.arduino;
 
 import de.klem.yannic.speedway.Speedway;
-import de.klem.yannic.speedway.arduino.Arduino;
 import de.klem.yannic.speedway.arduino.event.ConnectivityEvent;
-import de.klem.yannic.speedway.main.MainViewController;
-import de.klem.yannic.speedway.ui.SpeedwayController;
+import de.klem.yannic.speedway.MainViewController;
+import de.klem.yannic.speedway.utils.ui.SpeedwayController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

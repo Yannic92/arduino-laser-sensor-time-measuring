@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <VBox fx:id="mainViewRoot" prefHeight="349.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.main.MainViewController">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.MainViewController">
     <children>
         <fx:include fx:id="driversToolbar" source="driversToolbar.fxml"/>
         <fx:include fx:id="drivers" source="drivers.fxml" VBox.vgrow="ALWAYS"/>

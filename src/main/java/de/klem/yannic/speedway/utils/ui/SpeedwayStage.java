@@ -1,4 +1,4 @@
-package de.klem.yannic.speedway.ui;
+package de.klem.yannic.speedway.utils.ui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;

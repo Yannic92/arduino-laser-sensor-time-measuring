@@ -1,4 +1,4 @@
-package de.klem.yannic.speedway.async;
+package de.klem.yannic.speedway.utils.async;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;

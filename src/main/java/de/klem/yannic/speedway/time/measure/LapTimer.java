@@ -1,4 +1,4 @@
-package de.klem.yannic.speedway.measure;
+package de.klem.yannic.speedway.time.measure;
 
 import java.time.Duration;
 import java.time.Instant;
