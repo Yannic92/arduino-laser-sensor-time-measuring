@@ -7,8 +7,8 @@ import java.io.IOException;
 
 public class MainView extends SpeedwayStage {
 
-    public MainView(final Stage primaryStage) throws IOException {
-        super(primaryStage, "views/mainView/mainView.fxml", "Speedway", "icons/go-kart.png");
+    MainView(final Stage primaryStage) throws IOException {
+        super(primaryStage, "views/mainView.fxml", "Speedway", "icons/go-kart.png");
         maximize();
         primaryStage.show();
     }

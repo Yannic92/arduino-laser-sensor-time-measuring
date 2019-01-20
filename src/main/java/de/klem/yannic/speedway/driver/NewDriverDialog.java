@@ -9,10 +9,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class NewDriverDialog extends SpeedwayStage {
+class NewDriverDialog extends SpeedwayStage {
 
-    public NewDriverDialog(final Parent parent) throws IOException {
-        super(new Stage(), "views/newDriver/newDriver.fxml", "Neuer Fahrer", "icons/driver.png");
+    NewDriverDialog(final Parent parent) throws IOException {
+        super(new Stage(), "views/driver/newDriver.fxml", "Neuer Fahrer", "icons/driver.png");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(parent.getScene().getWindow());
         stage.setMaxWidth(358);

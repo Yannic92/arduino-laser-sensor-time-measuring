@@ -73,4 +73,10 @@ public class Driver {
     public String getDriverClass() {
         return driverClass;
     }
+
+    boolean anyFieldMatches(String filterText) {
+        return this.driverClass.contains(filterText) || this.firstName.contains(filterText) ||
+                this.lastName.contains(filterText) || this.startNumber.contains(filterText) ||
+                this.club.contains(filterText);
+    }
 }
