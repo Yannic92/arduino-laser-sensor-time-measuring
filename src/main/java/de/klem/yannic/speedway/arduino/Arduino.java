@@ -15,9 +15,10 @@ public class Arduino extends AbstractObservable<ConnectivityEvent> {
 
     public static final Arduino INSTANCE = new Arduino();
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-    private static final Long secondsToLock = 5L;
     private ArduinoSerial serial;
-    private Instant lastTick;
+    private LaserSensorEventListener laserSensorEventListener;
+
+    private boolean connected = false;
 
     private Arduino() {
     }
@@ -32,8 +33,16 @@ public class Arduino extends AbstractObservable<ConnectivityEvent> {
 
         List<String> availablePorts = ArduinoSerial.getAvailablePorts();
         for (String comPort : availablePorts) {
-            boolean connected = performConnect(comPort);
+            connected = performConnect(comPort);
             if (connected) {
+
+                try {
+                    laserSensorEventListener = new LaserSensorEventListener(this.serial);
+                    this.serial.addEventListener(laserSensorEventListener);
+                } catch (TooManyListenersException e) {
+                    throw new TooManyListenersRuntimeException(e);
+                }
+
                 emit(ConnectivityEvent.CONNECTED(this));
                 return true;
             }
@@ -44,8 +53,8 @@ public class Arduino extends AbstractObservable<ConnectivityEvent> {
 
     }
 
-    private boolean isConnected() {
-        return this.serial != null && this.serial.isConnected();
+    public boolean isConnected() {
+        return this.connected && this.serial != null && this.serial.isConnected();
     }
 
     public void disconnect() {
@@ -61,6 +70,7 @@ public class Arduino extends AbstractObservable<ConnectivityEvent> {
     }
 
     private boolean performConnect(final String comPort) {
+        logger.info("Performing connect.");
 
         this.serial = ArduinoSerial.getSerial(comPort);
 
@@ -109,22 +119,10 @@ public class Arduino extends AbstractObservable<ConnectivityEvent> {
     }
 
     public void onLapTick(final LapTickHandler lapTickHandler) {
-        try {
-            this.serial.addEventListener(serialPortEvent -> {
-                Instant now = Instant.now();
-                if (lastTick == null) {
-                    logger.info("First lap ticked");
-                    lastTick = now;
-                    lapTickHandler.tick(lastTick);
-                } else if (lastTick.isBefore(now.minusSeconds(secondsToLock))) {
-                    logger.info("Lap ticked");
-                    lastTick = now;
-                    lapTickHandler.tick(now);
-                }
-                this.serial.clearInputStream();
-            });
-        } catch (TooManyListenersException e) {
-            throw new TooManyListenersRuntimeException(e);
-        }
+        this.laserSensorEventListener.setLapTickHandler(lapTickHandler);
+    }
+
+    public void removeEventListener() {
+        this.laserSensorEventListener.setLapTickHandler(null);
     }
 }

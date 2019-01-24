@@ -24,28 +24,21 @@ class ArduinoSerial extends NRSerialPort {
     }
 
     static List<String> getAvailablePorts() {
+        logger.info("Looking for available ports.");
         List<String> availablePorts = new ArrayList<>(NRSerialPort.getAvailableSerialPorts());
         Collections.sort(availablePorts);
         return availablePorts;
     }
 
     static ArduinoSerial getSerial(final String port) {
-        ArduinoSerial.validatePort(port);
         return new ArduinoSerial(port, baudRate);
-    }
-
-    private static void validatePort(final String port) {
-        List<String> availablePorts = getAvailablePorts();
-        if (!availablePorts.contains(port)) {
-            throw new PortUnavailableException(port, availablePorts);
-        }
     }
 
     void clearInputStream() {
         InputStream inputStream = getInputStream();
         try {
             int availableBytes = inputStream.available();
-            if(availableBytes > 0) {
+            if (availableBytes > 0) {
                 inputStream.read(new byte[availableBytes]);
             }
         } catch (IOException e) {

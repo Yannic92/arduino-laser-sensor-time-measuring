@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Drivers {
+class Drivers {
 
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
     private static final String DRIVERS_FILE_NAME = "./../drivers.csv";
@@ -39,9 +39,6 @@ public class Drivers {
 
 
     private final ObservableList<Driver> drivers = FXCollections.observableArrayList();
-
-    private Drivers() {
-    }
 
     private Drivers(final List<Driver> initialDrivers) {
         this.drivers.addAll(initialDrivers);

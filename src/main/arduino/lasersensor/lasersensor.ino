@@ -1,10 +1,11 @@
-int lasersensorPin = 2;
-int threshold = 5;
+#define IRpin_PIN PIND
+#define IRpin 2
+#define threshold 1500
+#define RESOLUTION 20
 int count = 0;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(lasersensorPin, INPUT);
   waitForHandshake();
 }
 
@@ -25,14 +26,12 @@ void waitForHandshake() {
 }
 
 void loop() {
-  int sensorState = digitalRead(lasersensorPin);
-  if(sensorState == 0) {
+  if(!(IRpin_PIN & (1 << IRpin))) {
     count = count + 1;
   } else {
     count = 0;
   }
-  if(count >= threshold) {
+  if( count >= threshold ) {
     Serial.println(0);
   }
-  delay(1); // delay in between reads for stability
 }

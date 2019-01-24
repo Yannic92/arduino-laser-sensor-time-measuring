@@ -3,7 +3,7 @@ package de.klem.yannic.speedway.time.measure;
 import java.time.Duration;
 
 @FunctionalInterface
-public interface LapFinishedHandler {
+public interface TimerFinishedHandler {
 
-    void lapFinished(final Duration lapDuration);
+    void timerFinished(final Duration... lapDurations);
 }
