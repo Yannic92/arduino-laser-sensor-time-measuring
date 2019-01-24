@@ -3,7 +3,6 @@ package de.klem.yannic.speedway.driver;
 import de.klem.yannic.speedway.time.timetable.TimeTable;
 import de.klem.yannic.speedway.utils.ui.SpeedwayController;
 import javafx.fxml.FXML;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
@@ -31,6 +30,21 @@ public class DriversToolbarController implements SpeedwayController {
     @FXML
     private void openNewDriverDialog() throws IOException {
         new NewDriverDialog(root.getParent());
+    }
+
+    @FXML
+    private void exportDrivers() {
+
+    }
+
+    @FXML
+    private void importDrivers() {
+
+    }
+
+    @FXML
+    private void clearDrivers() {
+
     }
 
     @Override

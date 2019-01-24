@@ -3,6 +3,7 @@
 #define threshold 1500
 #define RESOLUTION 20
 int count = 0;
+int currentState = -1;
 
 void setup() {
   Serial.begin(9600);
@@ -30,8 +31,10 @@ void loop() {
     count = count + 1;
   } else {
     count = 0;
+    currentState = 1;
   }
-  if( count >= threshold ) {
+  if( count >= threshold && currentState != 0 ) {
     Serial.println(0);
+    currentState = 0;
   }
 }

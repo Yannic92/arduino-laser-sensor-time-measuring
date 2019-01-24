@@ -3,6 +3,7 @@ package de.klem.yannic.speedway.arduino;
 import de.klem.yannic.speedway.MainViewController;
 import de.klem.yannic.speedway.Speedway;
 import de.klem.yannic.speedway.arduino.event.ConnectivityEvent;
+import de.klem.yannic.speedway.utils.async.Async;
 import de.klem.yannic.speedway.utils.ui.SpeedwayController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -49,7 +50,7 @@ public class ArduinoToolbarController implements SpeedwayController {
     private void setDisconnected(final ConnectivityEvent connectivityEvent) {
         Platform.runLater(() -> {
             connectButton.setOnAction((event) ->
-                    Speedway.executor.submit(() -> connectivityEvent.getSource().connect()));
+                    Async.execute(() -> connectivityEvent.getSource().connect()));
             connectButton.setText("Arduino verbinden");
             connectButton.setGraphic(disconnectedIcon);
             connectButton.setDisable(false);
@@ -59,7 +60,7 @@ public class ArduinoToolbarController implements SpeedwayController {
     private void setConnected(final ConnectivityEvent connectivityEvent) {
         Platform.runLater(() -> {
             connectButton.setOnAction((event ->
-                    Speedway.executor.submit(() -> connectivityEvent.getSource().disconnect())));
+                    Async.execute(() -> connectivityEvent.getSource().disconnect())));
             connectButton.setText("Arduino trennen");
             connectButton.setGraphic(connectedIcon);
             connectButton.setDisable(false);
@@ -86,6 +87,6 @@ public class ArduinoToolbarController implements SpeedwayController {
         arduino.addEventHandler(ConnectivityEvent.DISCONNECTED_TYPE, this::setDisconnected);
         arduino.addEventHandler(ConnectivityEvent.CONNECTING_TYPE, this::setConnecting);
 
-        Speedway.executor.submit(arduino::connect);
+        Async.execute(arduino::connect);
     }
 }

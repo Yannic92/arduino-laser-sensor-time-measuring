@@ -1,6 +1,7 @@
 package de.klem.yannic.speedway.arduino;
 
 import de.klem.yannic.speedway.Speedway;
+import de.klem.yannic.speedway.utils.async.Async;
 import gnu.io.NRSerialPort;
 
 import java.io.IOException;
@@ -47,8 +48,7 @@ class ArduinoSerial extends NRSerialPort {
     }
 
     Optional<String> readWithTimeout(final ArduinoSerial serial, final int numberOfExpectedBytes) {
-        final Future<String> serialInputString = Speedway.executor.submit(
-                () -> performReading(serial, numberOfExpectedBytes));
+        final Future<String> serialInputString = Async.execute(() -> performReading(serial, numberOfExpectedBytes));
         try {
             return Optional.of(serialInputString.get(5, TimeUnit.SECONDS));
         } catch (InterruptedException | TimeoutException | ExecutionException ex) {
@@ -66,9 +66,6 @@ class ArduinoSerial extends NRSerialPort {
             //Wait for available bytes
             try {
                 Thread.sleep(100);
-                if (Speedway.executor.isShutdown()) {
-                    return "";
-                }
             } catch (InterruptedException e) {
                 return "";
             }

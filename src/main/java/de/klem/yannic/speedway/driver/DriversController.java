@@ -4,6 +4,7 @@ import de.klem.yannic.speedway.arduino.Arduino;
 import de.klem.yannic.speedway.arduino.event.ConnectivityEvent;
 import de.klem.yannic.speedway.time.measure.LapTimer;
 import de.klem.yannic.speedway.utils.ui.SpeedwayController;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.collections.transformation.FilteredList;
@@ -122,7 +123,20 @@ public class DriversController implements SpeedwayController {
     }
 
     @FXML
+    public void editDriver() {
+
+    }
+
+    @FXML
+    public void deleteDriver() {
+
+    }
+
+    @FXML
     public void startTimeMeasuring() {
+        Platform.runLater(() -> {
+            timeLabel.setText("--:--:---");
+        });
         this.driversTable.setDisable(true);
         this.startTimeMeasuringButton.setDisable(true);
         activeTimer = new LapTimer(selectedDriver, timeLabel, lapDurations -> {

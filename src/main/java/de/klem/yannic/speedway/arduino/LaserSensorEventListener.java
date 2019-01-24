@@ -21,6 +21,7 @@ public class LaserSensorEventListener implements SerialPortEventListener {
     @Override
     public synchronized void serialEvent(SerialPortEvent serialPortEvent) {
         Instant now = Instant.now();
+        this.serial.clearInputStream();
         if (lapTickHandler == null) {
             return;
         }
@@ -29,7 +30,6 @@ public class LaserSensorEventListener implements SerialPortEventListener {
             lastTick = now;
             lapTickHandler.tick(lastTick);
         }
-        this.serial.clearInputStream();
     }
 
     synchronized void setLapTickHandler(final LapTickHandler lapTickHandler) {
