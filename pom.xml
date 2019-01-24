@@ -18,27 +18,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <!-- this is to extract the JRE tgz file we downloaded -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.5.1</version>
-                <executions>
-                    <execution>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeGroupIds>com.oracle.java</includeGroupIds>
-                            <includeTypes>tgz</includeTypes>
-                            <includeArtifactIds>jre</includeArtifactIds>
-                            <includeClassifiers>win32</includeClassifiers>
-                            <outputDirectory>target/win32</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <archive>
@@ -63,6 +42,7 @@
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
+                <version>1.7.25</version>
                 <executions>
                     <execution>
                         <id>l4j-clui</id>
@@ -81,7 +61,10 @@
                             </classPath>
                             <icon>src/main/resources/icons/go-kart.ico</icon>
                             <jre>
-                                <path>./win32/java</path>
+                                <path>%JAVA_HOME%</path>
+                                <minVersion>1.8.0</minVersion>
+                                <jdkPreference>preferJre</jdkPreference>
+                                <runtimeBits>32</runtimeBits>
                             </jre>
                             <versionInfo>
                                 <fileVersion>1.0.0.0</fileVersion>
@@ -101,14 +84,6 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <!-- this repository has the JRE tgz -->
-            <id>alfresco</id>
-            <url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.neuronrobotics</groupId>
@@ -119,13 +94,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.8.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle.java</groupId>
-            <artifactId>jre</artifactId>
-            <classifier>win32</classifier>
-            <type>tgz</type>
-            <version>1.8.0_131</version>
         </dependency>
     </dependencies>
 
