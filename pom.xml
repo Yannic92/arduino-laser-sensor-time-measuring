@@ -18,20 +18,96 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- this is to extract the JRE tgz file we downloaded -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeGroupIds>com.oracle.java</includeGroupIds>
+                            <includeTypes>tgz</includeTypes>
+                            <includeArtifactIds>jre</includeArtifactIds>
+                            <includeClassifiers>win32</includeClassifiers>
+                            <outputDirectory>target/win32</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>fully.qualified.MainClass</mainClass>
+                            <mainClass>de.klem.yannic.speedway.Speedway</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/speedway.exe</outfile>
+                            <jar>target/speedway-1.0-SNAPSHOT-jar-with-dependencies.jar</jar>
+                            <errTitle>Speedway</errTitle>
+                            <classPath>
+                                <mainClass>de.klem.yannic.speedway.Speedway</mainClass>
+                                <addDependencies>false</addDependencies>
+                            </classPath>
+                            <icon>src/main/resources/icons/go-kart.ico</icon>
+                            <jre>
+                                <path>./win32/java</path>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.0.0</fileVersion>
+                                <txtFileVersion>txt file version?</txtFileVersion>
+                                <fileDescription>Contains the Speedway application</fileDescription>
+                                <copyright>© 2019 Yannic Klem All Rights Reserved</copyright>
+                                <productVersion>1.0.0.0</productVersion>
+                                <txtProductVersion>txt product version</txtProductVersion>
+                                <productName>Speedway</productName>
+                                <internalName>Speedway</internalName>
+                                <originalFilename>speedway.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <!-- this repository has the JRE tgz -->
+            <id>alfresco</id>
+            <url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -43,6 +119,13 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.java</groupId>
+            <artifactId>jre</artifactId>
+            <classifier>win32</classifier>
+            <type>tgz</type>
+            <version>1.8.0_131</version>
         </dependency>
     </dependencies>
 
