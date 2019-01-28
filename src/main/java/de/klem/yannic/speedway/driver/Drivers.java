@@ -8,6 +8,7 @@ import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -42,17 +43,17 @@ class Drivers {
 
     private Drivers(final List<Driver> initialDrivers) {
         this.drivers.addAll(initialDrivers);
-        this.drivers.addListener((ListChangeListener<Driver>) c -> writeToFile());
+        this.drivers.addListener((ListChangeListener<Driver>) c -> writeToFile(driversFile));
     }
 
     private static Drivers loadFromFile() {
-        return new Drivers(readFromFile());
+        return new Drivers(readFromFile(driversFile));
     }
 
-    private static List<Driver> readFromFile() {
+    private static List<Driver> readFromFile(final File file) {
         final List<Driver> drivers = new ArrayList<>();
         String line;
-        try (BufferedReader br = new BufferedReader(new FileReader(driversFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             while ((line = br.readLine()) != null) {
                 if (line.isEmpty()) {
                     continue;
@@ -65,10 +66,10 @@ class Drivers {
         return drivers;
     }
 
-    private void writeToFile() {
+    private void writeToFile(final File file) {
         PrintWriter printWriter = null;
         try {
-            printWriter = new PrintWriter(driversFile);
+            printWriter = new PrintWriter(file);
         } catch (FileNotFoundException e) {
             throw new IllegalStateException("Could not write drivers to file");
         }
@@ -79,11 +80,37 @@ class Drivers {
         printWriter.close();
     }
 
-    public static Drivers getInstance() {
+    static Drivers getInstance() {
         return instance;
     }
 
-    public ObservableList<Driver> getDriversList() {
-        return this.drivers;
+    ObservableList<Driver> getDriversList() {
+        return FXCollections.unmodifiableObservableList(this.drivers);
+    }
+
+    boolean remove(final Driver driverToRemove) {
+        return this.drivers.remove(driverToRemove);
+    }
+
+    boolean add(final Driver driver) {
+        return this.drivers.add(driver);
+    }
+
+    boolean addAll(final Collection<Driver> drivers) {
+        return this.drivers.addAll(drivers);
+    }
+
+    void clear() {
+        this.drivers.clear();
+    }
+
+    void load(File fileToImport) {
+        List<Driver> drivers = readFromFile(fileToImport);
+        clear();
+        addAll(drivers);
+    }
+
+    void save(File file) {
+        writeToFile(file);
     }
 }

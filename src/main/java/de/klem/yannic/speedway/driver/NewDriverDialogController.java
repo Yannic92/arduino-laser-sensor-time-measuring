@@ -44,7 +44,7 @@ public class NewDriverDialogController implements SpeedwayController {
     private final List<TextField> allTextFields = new ArrayList<>();
     private final List<TextFieldValidator> validators = new ArrayList<>();
 
-    private static final ObservableList<Driver> driversList = Drivers.getInstance().getDriversList();
+    private static final Drivers drivers = Drivers.getInstance();
 
     private void setDisabledOfCreateButtons(final boolean disabled) {
         createButton.setDisable(disabled);
@@ -86,7 +86,7 @@ public class NewDriverDialogController implements SpeedwayController {
     }
 
     private boolean startNumberAlreadyExists(final String startNumber) {
-        return !driversList.filtered(driver -> startNumber.equals(driver.getStartNumber())).isEmpty();
+        return !drivers.getDriversList().filtered(driver -> startNumber.equals(driver.getStartNumber())).isEmpty();
     }
 
     private void enableButtonListener() {
@@ -119,7 +119,7 @@ public class NewDriverDialogController implements SpeedwayController {
         String startNumber = startNumberInput.getText();
         String driverClass = classInput.getText();
 
-        driversList.add(new Driver(firstName, lastName, club, startNumber, driverClass));
+        drivers.add(new Driver(firstName, lastName, club, startNumber, driverClass));
         reset();
     }
 

@@ -11,6 +11,9 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +21,9 @@ import java.util.function.Predicate;
 
 
 public class DriversController implements SpeedwayController {
+
+    @FXML
+    private HBox driversRoot;
 
     @FXML
     private TableView<Driver> driversTable;
@@ -59,6 +65,9 @@ public class DriversController implements SpeedwayController {
     private Button cancelTimeMeasuringButton;
 
     @FXML
+    private Button deleteDriverButton;
+
+    @FXML
     private Label timeLabel;
 
     private TextField driversFilter;
@@ -92,6 +101,12 @@ public class DriversController implements SpeedwayController {
         Arduino.INSTANCE.addEventHandler(ConnectivityEvent.CONNECTED_TYPE, (event) -> updateStartTimeMeasuringButton());
         Arduino.INSTANCE.addEventHandler(ConnectivityEvent.CONNECTING_TYPE, (event) -> updateStartTimeMeasuringButton());
         Arduino.INSTANCE.addEventHandler(ConnectivityEvent.DISCONNECTED_TYPE, (event) -> updateStartTimeMeasuringButton());
+
+        driversRoot.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+            if (KeyCode.DELETE == event.getCode()) {
+                this.deleteDriverButton.fire();
+            }
+        });
     }
 
     private boolean tableFilterPredicate(final Driver driver) {
@@ -112,6 +127,7 @@ public class DriversController implements SpeedwayController {
             this.selectedDriverStartNumber.setText(selectedDriver.getStartNumber());
         }
         updateStartTimeMeasuringButton();
+        updateDeleteDriverButton();
     }
 
     private void updateStartTimeMeasuringButton() {
@@ -122,18 +138,18 @@ public class DriversController implements SpeedwayController {
         }
     }
 
-    @FXML
-    public void editDriver() {
-
+    private void updateDeleteDriverButton() {
+        this.deleteDriverButton.setDisable(this.selectedDriver == null);
     }
 
     @FXML
     public void deleteDriver() {
-
+        Drivers.getInstance().remove(selectedDriver);
     }
 
     @FXML
     public void startTimeMeasuring() {
+        this.deleteDriverButton.setDisable(true);
         Platform.runLater(() -> {
             timeLabel.setText("--:--:---");
         });
@@ -156,5 +172,6 @@ public class DriversController implements SpeedwayController {
         Arduino.INSTANCE.removeEventListener();
         updateStartTimeMeasuringButton();
         this.driversTable.setDisable(false);
+        this.deleteDriverButton.setDisable(false);
     }
 }

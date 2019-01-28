@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.driver.DriversController">
+<HBox fx:id="driversRoot" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.driver.DriversController">
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true" HBox.hgrow="ALWAYS">
          <content>
@@ -44,7 +44,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
               </rowConstraints>
                 <Label text="Nachname" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="TOP" />
                 <TextField fx:id="selectedDriverLastName" editable="false" minHeight="25.0" prefHeight="25.0" prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -56,20 +56,11 @@
                 <TextField fx:id="selectedDriverStartNumber" editable="false" layoutX="20.0" layoutY="200.0" minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <Label layoutX="20.0" layoutY="230.0" text="Klasse" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="TOP" />
                 <TextField fx:id="selectedDriverClass" editable="false" layoutX="20.0" layoutY="250.0" minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-               <Button fx:id="deleteDriverButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#deleteDriver" text="Fahrer löschen" GridPane.columnIndex="0" GridPane.rowIndex="5">
+               <Button fx:id="deleteDriverButton" disable="true" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#deleteDriver" text="Fahrer löschen" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                   <graphic>
                      <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT" preserveRatio="true">
                         <image>
                            <Image url="/icons/delete-driver.png" />
-                        </image>
-                     </ImageView>
-                  </graphic>
-               </Button>
-               <Button fx:id="editDriverButton" layoutX="10.0" layoutY="159.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#editDriver" text="Fahrer bearbeiten" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                  <graphic>
-                     <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT" preserveRatio="true">
-                        <image>
-                           <Image url="/icons/edit.png" />
                         </image>
                      </ImageView>
                   </graphic>
