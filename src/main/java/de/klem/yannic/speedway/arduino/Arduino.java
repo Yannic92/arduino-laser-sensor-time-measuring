@@ -98,7 +98,7 @@ public class Arduino extends AbstractObservable<ConnectivityEvent> {
         serial.clearInputStream();
         serial.write("Reset");
 
-        String waitingForHandshake = serial.readWithTimeout(serial, 23).orElse("");
+        String waitingForHandshake = serial.readWithTimeout(23).orElse("");
 
         if (!"Waiting for Handshake\r\n".equals(waitingForHandshake)) {
             return false;
@@ -106,7 +106,7 @@ public class Arduino extends AbstractObservable<ConnectivityEvent> {
 
         serial.write("Arduino\n");
 
-        String uno = serial.readWithTimeout(serial, 5).orElse("");
+        String uno = serial.readWithTimeout(5).orElse("");
 
         if (!"Uno\r\n".equals(uno)) {
             return false;

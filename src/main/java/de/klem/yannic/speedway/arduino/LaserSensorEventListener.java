@@ -4,12 +4,8 @@ import de.klem.yannic.speedway.time.measure.LapTickHandler;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
-import java.time.Instant;
-
 public class LaserSensorEventListener implements SerialPortEventListener {
 
-    private Instant lastTick;
-    private static final Long secondsToLock = 5L;
     private LapTickHandler lapTickHandler;
     private final ArduinoSerial serial;
 
@@ -20,20 +16,16 @@ public class LaserSensorEventListener implements SerialPortEventListener {
 
     @Override
     public synchronized void serialEvent(SerialPortEvent serialPortEvent) {
-        Instant now = Instant.now();
-        this.serial.clearInputStream();
         if (lapTickHandler == null) {
             return;
         }
 
-        if (lastTick == null || lastTick.isBefore(now.minusSeconds(secondsToLock))) {
-            lastTick = now;
-            lapTickHandler.tick(lastTick);
-        }
+        serial.readLine().ifPresent(timeInMs -> {
+            lapTickHandler.tick(Long.parseUnsignedLong(timeInMs));
+        });
     }
 
     synchronized void setLapTickHandler(final LapTickHandler lapTickHandler) {
         this.lapTickHandler = lapTickHandler;
-        lastTick = null;
     }
 }

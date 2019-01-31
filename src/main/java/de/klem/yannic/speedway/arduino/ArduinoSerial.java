@@ -47,8 +47,8 @@ class ArduinoSerial extends NRSerialPort {
         }
     }
 
-    Optional<String> readWithTimeout(final ArduinoSerial serial, final int numberOfExpectedBytes) {
-        final Future<String> serialInputString = Async.execute(() -> performReading(serial, numberOfExpectedBytes));
+    Optional<String> readWithTimeout(final int numberOfExpectedBytes) {
+        final Future<String> serialInputString = Async.execute(() -> performReading(numberOfExpectedBytes));
         try {
             return Optional.of(serialInputString.get(5, TimeUnit.SECONDS));
         } catch (InterruptedException | TimeoutException | ExecutionException ex) {
@@ -58,10 +58,10 @@ class ArduinoSerial extends NRSerialPort {
         }
     }
 
-    private static String performReading(final ArduinoSerial serial, final int numberOfExpectedBytes)
+    private String performReading(final int numberOfExpectedBytes)
             throws IOException {
 
-        InputStream inputStream = serial.getInputStream();
+        InputStream inputStream = this.getInputStream();
         while (inputStream.available() < numberOfExpectedBytes) {
             //Wait for available bytes
             try {
@@ -73,6 +73,37 @@ class ArduinoSerial extends NRSerialPort {
         byte[] serialInputBytes = new byte[numberOfExpectedBytes];
         inputStream.read(serialInputBytes);
         return new String(serialInputBytes);
+    }
+
+    Optional<String> readLine() {
+
+        final Future<String> serialInputString = Async.execute(() -> doReadLine());
+        try {
+            return Optional.of(serialInputString.get(5, TimeUnit.SECONDS));
+        } catch (InterruptedException | TimeoutException | ExecutionException ex) {
+            return Optional.empty();
+        } finally {
+            serialInputString.cancel(true);
+        }
+    }
+
+    private String doReadLine() {
+        String line = "";
+        while (!line.endsWith("\r\n")) {
+            line += readAvailable();
+        }
+        return line.replace("\r\n", "");
+    }
+
+    private String readAvailable() {
+        try (InputStream inputStream = this.getInputStream()) {
+            byte[] serialInputBytes = new byte[inputStream.available()];
+            inputStream.read(serialInputBytes);
+            return new String(serialInputBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     void write(final String stringToWrite) {

@@ -24,7 +24,7 @@ public class LapTimer extends AnimationTimer implements LapTickHandler {
     private final Integer lapsToDrive = 2;
     private Integer lapCounter = 0;
     private long startTime;
-    private Instant lastTick;
+    private Long lastTick;
     private boolean running = false;
 
     public LapTimer(final Driver driver, final Label timeLabel, final TimerFinishedHandler timerFinishedHandler) {
@@ -35,13 +35,13 @@ public class LapTimer extends AnimationTimer implements LapTickHandler {
     }
 
     @Override
-    public void tick(Instant timeOfTick) {
+    public void tick(long timeOfTick) {
         if (lastTick == null) {
             lastTick = timeOfTick;
-            startTime = timeOfTick.toEpochMilli();
+            startTime = Instant.now().toEpochMilli();
             start();
         } else {
-            handleFinishedLap(Duration.between(lastTick, timeOfTick));
+            handleFinishedLap(Duration.ofMillis(timeOfTick - lastTick));
             lastTick = timeOfTick;
         }
     }

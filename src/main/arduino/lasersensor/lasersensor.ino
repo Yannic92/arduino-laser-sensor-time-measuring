@@ -4,6 +4,7 @@
 #define RESOLUTION 20
 int count = 0;
 int currentState = -1;
+unsigned long time;
 
 void setup() {
   Serial.begin(9600);
@@ -27,14 +28,20 @@ void waitForHandshake() {
 }
 
 void loop() {
+  unsigned long loopTime = millis();
   if(!(IRpin_PIN & (1 << IRpin))) {
+    if(currentState == 2) {
+      currentState = 1;
+      time = loopTime;
+    }
     count = count + 1;
   } else {
     count = 0;
-    currentState = 1;
+    currentState = 2;
   }
   if( count >= threshold && currentState != 0 ) {
-    Serial.println(0);
+    Serial.println(time);
     currentState = 0;
+    delay(5000);
   }
 }

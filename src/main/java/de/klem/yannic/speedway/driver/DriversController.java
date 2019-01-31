@@ -155,9 +155,7 @@ public class DriversController implements SpeedwayController {
         });
         this.driversTable.setDisable(true);
         this.startTimeMeasuringButton.setDisable(true);
-        activeTimer = new LapTimer(selectedDriver, timeLabel, lapDurations -> {
-            finishTimeMeasuring();
-        });
+        activeTimer = new LapTimer(selectedDriver, timeLabel, lapDurations -> finishTimeMeasuring());
         Arduino.INSTANCE.onLapTick(activeTimer);
         this.cancelTimeMeasuringButton.setDisable(false);
     }
