@@ -1,15 +1,13 @@
 package de.klem.yannic.speedway.driver;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import de.klem.yannic.speedway.time.timetable.TimeRecord;
+import de.klem.yannic.speedway.time.timetable.TimeRecords;
+import javafx.collections.*;
 
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 class Drivers {
@@ -38,27 +36,28 @@ class Drivers {
         instance = loadFromFile();
     }
 
+    private final ObservableMap<Driver, TimeRecord> timeRecords = FXCollections.observableHashMap();
 
-    private final ObservableList<Driver> drivers = FXCollections.observableArrayList();
-
-    private Drivers(final List<Driver> initialDrivers) {
-        this.drivers.addAll(initialDrivers);
-        this.drivers.addListener((ListChangeListener<Driver>) c -> writeToFile(driversFile));
+    private Drivers(final Map<Driver, TimeRecord> initialTimeRecords) {
+        this.timeRecords.putAll(initialTimeRecords);
+        this.timeRecords.addListener((MapChangeListener<Driver, TimeRecord>) c -> writeToFile(driversFile));
     }
 
     private static Drivers loadFromFile() {
         return new Drivers(readFromFile(driversFile));
     }
 
-    private static List<Driver> readFromFile(final File file) {
-        final List<Driver> drivers = new ArrayList<>();
+    private static Map<Driver, TimeRecord> readFromFile(final File file) {
+        final Map<Driver, TimeRecord> drivers = new ArrayList<>();
         String line;
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             while ((line = br.readLine()) != null) {
                 if (line.isEmpty()) {
                     continue;
                 }
-                drivers.add(Driver.fromCSV(line));
+                String[] splitedLine = line.split(";");
+                Driver.fromCSV(splitedLine[0]);
+                TimeRecord.fromCSV(splitedLine[1]);
             }
         } catch (IOException e) {
             e.printStackTrace();

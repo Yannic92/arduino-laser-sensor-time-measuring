@@ -26,7 +26,7 @@ public class Driver {
         this.driverClass = driverClass;
     }
 
-    static Driver fromCSV(final String csv) {
+    public static Driver fromCSV(final String csv) {
         final String[] driverFields = csv.split(",");
 
         if (driverFields.length < NUMBER_OF_CSV_FIELDS) {
@@ -44,7 +44,7 @@ public class Driver {
         );
     }
 
-    String toCSV() {
+    public String toCSV() {
         final String[] driverFields = new String[5];
         driverFields[FIRST_NAME_CSV_INDEX] = firstName;
         driverFields[LAST_NAME_CSV_INDEX] = lastName;
