@@ -29,7 +29,7 @@ public class Speedway extends Application {
     public static void main(String[] args) {
         launch(args);
         Async.shutdown();
-        Arduino.INSTANCE.disconnect();
+        Arduino.getSingletonInstance().disconnect();
         System.exit(0);
     }
 }

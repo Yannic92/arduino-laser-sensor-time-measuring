@@ -4,7 +4,7 @@ import de.klem.yannic.speedway.time.measure.LapTickHandler;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
-public class LaserSensorEventListener implements SerialPortEventListener {
+class LaserSensorEventListener implements SerialPortEventListener {
 
     private LapTickHandler lapTickHandler;
     private final ArduinoSerial serial;

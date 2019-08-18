@@ -98,9 +98,10 @@ public class DriversController implements SpeedwayController {
         driversTable.setItems(filteredDrivers);
         driversTable.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> updateSelectedDriver(newValue));
-        Arduino.INSTANCE.addEventHandler(ConnectivityEvent.CONNECTED_TYPE, (event) -> updateStartTimeMeasuringButton());
-        Arduino.INSTANCE.addEventHandler(ConnectivityEvent.CONNECTING_TYPE, (event) -> updateStartTimeMeasuringButton());
-        Arduino.INSTANCE.addEventHandler(ConnectivityEvent.DISCONNECTED_TYPE, (event) -> updateStartTimeMeasuringButton());
+        final Arduino arduino = Arduino.getSingletonInstance();
+        arduino.addEventHandler(ConnectivityEvent.CONNECTED_TYPE, (event) -> updateStartTimeMeasuringButton());
+        arduino.addEventHandler(ConnectivityEvent.CONNECTING_TYPE, (event) -> updateStartTimeMeasuringButton());
+        arduino.addEventHandler(ConnectivityEvent.DISCONNECTED_TYPE, (event) -> updateStartTimeMeasuringButton());
 
         driversRoot.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
             if (KeyCode.DELETE == event.getCode()) {
@@ -131,7 +132,7 @@ public class DriversController implements SpeedwayController {
     }
 
     private void updateStartTimeMeasuringButton() {
-        if (this.selectedDriver != null && Arduino.INSTANCE.isConnected()) {
+        if (this.selectedDriver != null && Arduino.getSingletonInstance().isConnected()) {
             this.startTimeMeasuringButton.setDisable(false);
         } else {
             this.startTimeMeasuringButton.setDisable(true);
@@ -156,7 +157,7 @@ public class DriversController implements SpeedwayController {
         this.driversTable.setDisable(true);
         this.startTimeMeasuringButton.setDisable(true);
         activeTimer = new LapTimer(selectedDriver, timeLabel, lapDurations -> finishTimeMeasuring());
-        Arduino.INSTANCE.onLapTick(activeTimer);
+        Arduino.getSingletonInstance().onLapTick(activeTimer);
         this.cancelTimeMeasuringButton.setDisable(false);
     }
 
@@ -167,7 +168,7 @@ public class DriversController implements SpeedwayController {
 
     private void finishTimeMeasuring() {
         this.cancelTimeMeasuringButton.setDisable(true);
-        Arduino.INSTANCE.removeEventListener();
+        Arduino.getSingletonInstance().removeLapTickHandler();
         updateStartTimeMeasuringButton();
         this.driversTable.setDisable(false);
         this.deleteDriverButton.setDisable(false);
