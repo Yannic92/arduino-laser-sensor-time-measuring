@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 public class DriversToolbarController implements SpeedwayController {
 
     private static final String FILE_DESCRIPTION = "A file containing driver data separated by commas.";
-    private static final String FILE_EXTENSION = "CSV";
+    private static final String FILE_EXTENSION = "csv";
     private static final String DEFAULT_FILE_NAME = "drivers.csv";
 
     @FXML
@@ -51,7 +51,7 @@ public class DriversToolbarController implements SpeedwayController {
         fileChooser.setInitialFileName(DEFAULT_FILE_NAME);
         fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter(FILE_DESCRIPTION, FILE_EXTENSION));
         fileChooser.setTitle("Fahrerliste exportieren");
-        File file = fileChooser.showOpenDialog(root.getParent().getScene().getWindow());
+        File file = fileChooser.showSaveDialog(root.getParent().getScene().getWindow());
 
         if (file != null) {
             Drivers.getInstance().save(file);
