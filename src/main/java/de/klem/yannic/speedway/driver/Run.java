@@ -66,8 +66,8 @@ public class Run {
         return new Run(laps, pylons, challenges);
     }
 
-    public List<Duration> getLaps() {
-        return laps;
+    public Duration getSummedDuration() {
+        return laps.stream().reduce(Duration::plus).orElse(Duration.ofSeconds(0));
     }
 
     public int getPylons() {
