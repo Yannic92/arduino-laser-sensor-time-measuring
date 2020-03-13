@@ -11,36 +11,37 @@
           <TableColumn editable="false" maxWidth="252.00003051757812" minWidth="-1.0" prefWidth="97.0" sortable="false" text="Startnummer" />
             <TableColumn editable="false" minWidth="0.0" prefWidth="328.0000305175781" sortable="false" text="Name">
                 <columns>
-          <TableColumn minWidth="0.0" prefWidth="127.0" text="Vorname" />
-            <TableColumn prefWidth="105.00003051757812" text="Nachname" />
+                    <TableColumn minWidth="0.0" prefWidth="127.0" text="Vorname" sortable="false"/>
+                    <TableColumn prefWidth="105.00003051757812" text="Nachname" sortable="false"/>
                 </columns>
             </TableColumn>
             <TableColumn editable="false" prefWidth="146.99993896484375" sortable="false" text="Verein" />
+            <TableColumn editable="false" prefWidth="146.99993896484375" text="Klasse" />
             <TableColumn editable="false" prefWidth="425.0" sortable="false" text="1. Lauf">
                 <columns>
-                    <TableColumn prefWidth="102.99993896484375" text="Gefahrene Zeit" />
-                    <TableColumn prefWidth="326.0" text="Fehler">
+                    <TableColumn prefWidth="102.99993896484375" text="Gefahrene Zeit" sortable="false"/>
+                    <TableColumn prefWidth="326.0" text="Fehler" sortable="false">
                         <columns>
-                            <TableColumn prefWidth="59.0" text="Pylonen" />
-                            <TableColumn prefWidth="63.0" text="Aufgaben" />
+                            <TableColumn prefWidth="59.0" text="Pylonen" sortable="false"/>
+                            <TableColumn prefWidth="63.0" text="Aufgaben" sortable="false"/>
                         </columns>
                     </TableColumn>
                 </columns>
             </TableColumn>
             <TableColumn editable="false" prefWidth="425.0" sortable="false" text="2. Lauf">
                 <columns>
-                    <TableColumn prefWidth="102.99993896484375" text="Gefahrene Zeit" />
-                    <TableColumn prefWidth="326.0" text="Fehler">
+                    <TableColumn prefWidth="102.99993896484375" text="Gefahrene Zeit" sortable="false"/>
+                    <TableColumn prefWidth="326.0" text="Fehler" sortable="false">
                         <columns>
-                            <TableColumn prefWidth="59.0" text="Pylonen" />
-                            <TableColumn prefWidth="63.0" text="Aufgaben" />
+                            <TableColumn prefWidth="59.0" text="Pylonen" sortable="false"/>
+                            <TableColumn prefWidth="63.0" text="Aufgaben" sortable="false"/>
                         </columns>
                     </TableColumn>
                 </columns>
             </TableColumn>
             <TableColumn editable="false" prefWidth="132.0" sortable="false" text="Gesamtzeit" />
-            <TableColumn editable="false" prefWidth="43.0" sortable="false" text="Platz" />
             <TableColumn editable="false" prefWidth="50.0" sortable="false" text="Punkte" />
+            <TableColumn editable="false" prefWidth="43.0" text="Platz" />
         </columns>
       </TableView>
    </content>
