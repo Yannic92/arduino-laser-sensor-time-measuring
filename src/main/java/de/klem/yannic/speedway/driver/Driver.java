@@ -1,57 +1,59 @@
 package de.klem.yannic.speedway.driver;
 
-import java.util.Arrays;
+import org.eclipse.ditto.json.JsonFieldDefinition;
+import org.eclipse.ditto.json.JsonObject;
 
 public class Driver {
 
-    private static final Integer FIRST_NAME_CSV_INDEX = 0;
-    private static final Integer LAST_NAME_CSV_INDEX = 1;
-    private static final Integer CLUB_CSV_INDEX = 2;
-    private static final Integer START_NUMBER_CSV_INDEX = 3;
-    private static final Integer CLASS_CSV_INDEX = 4;
-
-    private static final Integer NUMBER_OF_CSV_FIELDS = 5;
+    private static final JsonFieldDefinition<String> FIRST_NAME = JsonFieldDefinition.ofString("firstName");
+    private static final JsonFieldDefinition<String> LAST_NAME = JsonFieldDefinition.ofString("lastName");
+    private static final JsonFieldDefinition<String> CLUB = JsonFieldDefinition.ofString("club");
+    private static final JsonFieldDefinition<String> START_NUMBER = JsonFieldDefinition.ofString("startNumber");
+    private static final JsonFieldDefinition<String> DRIVER_CLASS = JsonFieldDefinition.ofString("driverClass");
+    private static final JsonFieldDefinition<JsonObject> RUN_1 = JsonFieldDefinition.ofJsonObject("run1");
+    private static final JsonFieldDefinition<JsonObject> RUN_2 = JsonFieldDefinition.ofJsonObject("run2");
 
     private final String firstName;
     private final String lastName;
     private final String club;
     private final String startNumber;
     private final String driverClass;
+    private final Run run1;
+    private final Run run2;
 
-    Driver(String firstName, String lastName, String club, String startNumber, String driverClass) {
+    Driver(final String firstName, final String lastName, final String club, final String startNumber,
+           final String driverClass, final Run run1, final Run run2) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.club = club;
         this.startNumber = startNumber;
         this.driverClass = driverClass;
+        this.run1 = run1;
+        this.run2 = run2;
     }
 
-    static Driver fromCSV(final String csv) {
-        final String[] driverFields = csv.split(",");
-
-        if (driverFields.length < NUMBER_OF_CSV_FIELDS) {
-            throw new IllegalStateException(String.format("Could not create Driver from CSV: '%s'. " +
-                            "Invalid number of fields in CSV. Required '%d' found '%d'.",
-                    csv, driverFields.length, NUMBER_OF_CSV_FIELDS));
-        }
-
-        return new Driver(
-                driverFields[Driver.FIRST_NAME_CSV_INDEX],
-                driverFields[Driver.LAST_NAME_CSV_INDEX],
-                driverFields[Driver.CLUB_CSV_INDEX],
-                driverFields[Driver.START_NUMBER_CSV_INDEX],
-                driverFields[Driver.CLASS_CSV_INDEX]
-        );
+    JsonObject toJson() {
+        return JsonObject.newBuilder()
+                .set(FIRST_NAME, firstName)
+                .set(LAST_NAME, lastName)
+                .set(CLUB, club)
+                .set(START_NUMBER, startNumber)
+                .set(DRIVER_CLASS, driverClass)
+                .set(RUN_1, run1.toJson())
+                .set(RUN_2, run2.toJson())
+                .build();
     }
 
-    String toCSV() {
-        final String[] driverFields = new String[5];
-        driverFields[FIRST_NAME_CSV_INDEX] = firstName;
-        driverFields[LAST_NAME_CSV_INDEX] = lastName;
-        driverFields[CLUB_CSV_INDEX] = club;
-        driverFields[START_NUMBER_CSV_INDEX] = startNumber;
-        driverFields[CLASS_CSV_INDEX] = driverClass;
-        return String.join(",", driverFields);
+    static Driver fromJson(final JsonObject jsonObject) {
+        final String firstName = jsonObject.getValueOrThrow(FIRST_NAME);
+        final String lastName = jsonObject.getValueOrThrow(LAST_NAME);
+        final String club = jsonObject.getValueOrThrow(CLUB);
+        final String startNumber = jsonObject.getValueOrThrow(START_NUMBER);
+        final String driverClass = jsonObject.getValueOrThrow(DRIVER_CLASS);
+        final Run run1 = Run.fromJson(jsonObject.getValueOrThrow(RUN_1));
+        final Run run2 = Run.fromJson(jsonObject.getValueOrThrow(RUN_2));
+        return new Driver(firstName, lastName, club, startNumber, driverClass, run1, run2);
     }
 
     public String getFirstName() {

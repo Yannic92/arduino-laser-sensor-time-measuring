@@ -3,6 +3,7 @@ package de.klem.yannic.speedway.driver;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import org.eclipse.ditto.json.JsonObject;
 
 import java.io.*;
 import java.lang.invoke.MethodHandles;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 class Drivers {
 
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
-    private static final String DRIVERS_FILE_NAME = "./../drivers.csv";
+    private static final String DRIVERS_FILE_NAME = "./../drivers.db";
     private static final File DRIVERS_FILE_LOCATION;
     private static final File driversFile;
     private static final Drivers instance;
@@ -58,7 +59,7 @@ class Drivers {
                 if (line.isEmpty()) {
                     continue;
                 }
-                drivers.add(Driver.fromCSV(line));
+                drivers.add(Driver.fromJson(JsonObject.of(line)));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,7 +75,7 @@ class Drivers {
             throw new IllegalStateException("Could not write drivers to file");
         }
         for (Driver driver : drivers) {
-            printWriter.write(driver.toCSV() + "\n");
+            printWriter.write(driver.toJson().toString() + "\n");
         }
         printWriter.flush();
         printWriter.close();

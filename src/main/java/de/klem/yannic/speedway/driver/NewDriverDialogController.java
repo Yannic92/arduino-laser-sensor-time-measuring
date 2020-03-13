@@ -2,7 +2,6 @@ package de.klem.yannic.speedway.driver;
 
 import de.klem.yannic.speedway.utils.ui.SpeedwayController;
 import de.klem.yannic.speedway.utils.ui.TextFieldValidator;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -119,7 +118,7 @@ public class NewDriverDialogController implements SpeedwayController {
         String startNumber = startNumberInput.getText();
         String driverClass = classInput.getText();
 
-        drivers.add(new Driver(firstName, lastName, club, startNumber, driverClass));
+        drivers.add(new Driver(firstName, lastName, club, startNumber, driverClass, Run.newInstance(), Run.newInstance()));
         reset();
     }
 
