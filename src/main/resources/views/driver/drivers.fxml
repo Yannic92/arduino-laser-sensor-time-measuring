@@ -1,59 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
 <HBox fx:id="driversRoot" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.driver.DriversController">
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true" HBox.hgrow="ALWAYS">
          <content>
-              <TableView fx:id="driversTable" editable="true">
-                  <columns>
-                      <TableColumn fx:id="startNumber" prefWidth="91.0" text="Startnummer" />
-                      <TableColumn fx:id="firstName" prefWidth="103.99996948242188" text="Vorname" />
-                      <TableColumn fx:id="lastName" prefWidth="103.99996948242188" text="Nachname" />
-                      <TableColumn fx:id="club" prefWidth="103.99996948242188" text="Verein" />
-                      <TableColumn fx:id="driverClass" prefWidth="103.99996948242188" text="Klasse" />
-                      <TableColumn editable="false" prefWidth="425.0" sortable="false" text="1. Lauf">
-                          <columns>
-                              <TableColumn fx:id="run1Time" prefWidth="102.99993896484375" text="Gefahrene Zeit" sortable="false"/>
-                              <TableColumn prefWidth="326.0" text="Fehler" sortable="false">
-                                  <columns>
-                                      <TableColumn fx:id="run1Pylons" prefWidth="59.0" text="Pylonen" sortable="false"/>
-                                      <TableColumn fx:id="run1Challenges" prefWidth="63.0" text="Aufgaben" sortable="false"/>
-                                  </columns>
-                              </TableColumn>
-                          </columns>
-                      </TableColumn>
-                      <TableColumn editable="false" prefWidth="425.0" sortable="false" text="2. Lauf">
-                          <columns>
-                              <TableColumn fx:id="run2Time" prefWidth="102.99993896484375" text="Gefahrene Zeit" sortable="false"/>
-                              <TableColumn prefWidth="326.0" text="Fehler" sortable="false">
-                                  <columns>
-                                      <TableColumn fx:id="run2Pylons" prefWidth="59.0" text="Pylonen" sortable="false"/>
-                                      <TableColumn fx:id="run2Challenges" prefWidth="63.0" text="Aufgaben" sortable="false"/>
-                                  </columns>
-                              </TableColumn>
-                          </columns>
-                      </TableColumn>
-                      <TableColumn editable="false" prefWidth="132.0" sortable="false" text="Gesamtzeit" />
-                      <TableColumn editable="false" prefWidth="50.0" sortable="false" text="Punkte" />
-                      <TableColumn editable="false" prefWidth="43.0" text="Platz" />
-                  </columns>
-              </TableView>
+             <fx:include fx:id="timeTable" source="timeTable.fxml"/>
          </content>
       </ScrollPane>
       <VBox alignment="BOTTOM_CENTER">

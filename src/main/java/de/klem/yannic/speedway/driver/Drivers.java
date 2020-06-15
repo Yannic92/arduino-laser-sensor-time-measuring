@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-class Drivers {
+public class Drivers {
 
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
     private static final String DRIVERS_FILE_NAME = "./../drivers.db";
@@ -81,11 +81,11 @@ class Drivers {
         printWriter.close();
     }
 
-    static Drivers getInstance() {
+    public static Drivers getInstance() {
         return instance;
     }
 
-    ObservableList<Driver> getDriversList() {
+    public ObservableList<Driver> getDriversList() {
         return FXCollections.unmodifiableObservableList(this.drivers);
     }
 
