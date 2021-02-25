@@ -4,6 +4,7 @@ import org.eclipse.ditto.json.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,9 +53,9 @@ public class Run {
                 .build();
     }
 
-    public Run addLapTime(final Duration lapTime) {
+    public Run setLapTimes(final Collection<Duration> lapTimes) {
         final List<Duration> newLaps = new ArrayList<>(laps);
-        newLaps.add(lapTime);
+        newLaps.addAll(lapTimes);
         return new Run(newLaps, pylons, challenges);
     }
 

@@ -1,6 +1,5 @@
 package de.klem.yannic.speedway.arduino;
 
-import de.klem.yannic.speedway.Speedway;
 import de.klem.yannic.speedway.utils.async.Async;
 import gnu.io.NRSerialPort;
 
@@ -11,7 +10,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 class ArduinoSerial extends NRSerialPort {

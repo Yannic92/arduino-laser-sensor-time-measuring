@@ -2,6 +2,9 @@ package de.klem.yannic.speedway.driver;
 
 import org.eclipse.ditto.json.JsonFieldDefinition;
 import org.eclipse.ditto.json.JsonObject;
+import org.eclipse.ditto.json.JsonObjectBuilder;
+
+import java.util.Optional;
 
 public class Driver {
 
@@ -22,6 +25,12 @@ public class Driver {
     private final Run run2;
 
     Driver(final String firstName, final String lastName, final String club, final String startNumber,
+           final String driverClass) {
+
+        this(firstName, lastName, club, startNumber, driverClass, null, null);
+    }
+
+    Driver(final String firstName, final String lastName, final String club, final String startNumber,
            final String driverClass, final Run run1, final Run run2) {
 
         this.firstName = firstName;
@@ -34,15 +43,22 @@ public class Driver {
     }
 
     JsonObject toJson() {
-        return JsonObject.newBuilder()
+        JsonObjectBuilder driverJsonBuilder = JsonObject.newBuilder()
                 .set(FIRST_NAME, firstName)
                 .set(LAST_NAME, lastName)
                 .set(CLUB, club)
                 .set(START_NUMBER, startNumber)
-                .set(DRIVER_CLASS, driverClass)
-                .set(RUN_1, run1.toJson())
-                .set(RUN_2, run2.toJson())
-                .build();
+                .set(DRIVER_CLASS, driverClass);
+
+        if (run1 != null) {
+            driverJsonBuilder.set(RUN_1, run1.toJson());
+        }
+
+        if (run2 != null) {
+            driverJsonBuilder.set(RUN_2, run2.toJson());
+        }
+
+        return driverJsonBuilder.build();
     }
 
     static Driver fromJson(final JsonObject jsonObject) {
@@ -51,8 +67,12 @@ public class Driver {
         final String club = jsonObject.getValueOrThrow(CLUB);
         final String startNumber = jsonObject.getValueOrThrow(START_NUMBER);
         final String driverClass = jsonObject.getValueOrThrow(DRIVER_CLASS);
-        final Run run1 = Run.fromJson(jsonObject.getValueOrThrow(RUN_1));
-        final Run run2 = Run.fromJson(jsonObject.getValueOrThrow(RUN_2));
+        final Run run1 = jsonObject.getValue(RUN_1)
+                .map(Run::fromJson)
+                .orElse(null);
+        final Run run2 = jsonObject.getValue(RUN_2)
+                .map(Run::fromJson)
+                .orElse(null);
         return new Driver(firstName, lastName, club, startNumber, driverClass, run1, run2);
     }
 
@@ -76,12 +96,12 @@ public class Driver {
         return driverClass;
     }
 
-    public Run getRun1() {
-        return run1;
+    public Optional<Run> getRun1() {
+        return Optional.ofNullable(run1);
     }
 
-    public Run getRun2() {
-        return run1;
+    public Optional<Run> getRun2() {
+        return Optional.ofNullable(run2);
     }
 
     boolean anyFieldMatches(String filterText) {
@@ -90,4 +110,11 @@ public class Driver {
                 this.club.contains(filterText);
     }
 
+    public Driver setRun1(Run run1) {
+        return new Driver(firstName, lastName, club, startNumber, driverClass, run1, run2);
+    }
+
+    public Driver setRun2(Run run2) {
+        return new Driver(firstName, lastName, club, startNumber, driverClass, run1, run2);
+    }
 }

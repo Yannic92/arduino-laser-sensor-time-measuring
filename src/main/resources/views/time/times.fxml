@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ScrollPane?>
-
 <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="574.0" prefWidth="976.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.time.TimesController">
    <content>
        <fx:include fx:id="timeTable" source="../driver/timeTable.fxml"/>

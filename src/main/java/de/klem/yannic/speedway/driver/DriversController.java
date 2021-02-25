@@ -9,12 +9,16 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
@@ -122,7 +126,11 @@ public class DriversController implements SpeedwayController {
 
     @FXML
     public void deleteDriver() {
-        Drivers.getInstance().remove(selectedDriver);
+        deleteDriver(selectedDriver);
+    }
+
+    private void deleteDriver(final Driver driver) {
+        Drivers.getInstance().remove(driver);
     }
 
     @FXML
@@ -133,7 +141,7 @@ public class DriversController implements SpeedwayController {
         });
         this.timeTableController.disableSelection();
         this.startTimeMeasuringButton.setDisable(true);
-        activeTimer = new LapTimer(selectedDriver, timeLabel, lapDurations -> finishTimeMeasuring());
+        activeTimer = new LapTimer(selectedDriver, timeLabel, this::finishTimeMeasuring);
         Arduino.getSingletonInstance().onLapTick(activeTimer);
         this.cancelTimeMeasuringButton.setDisable(false);
     }
@@ -143,11 +151,31 @@ public class DriversController implements SpeedwayController {
         activeTimer.stop();
     }
 
-    private void finishTimeMeasuring() {
+    private void finishTimeMeasuring(final Duration[] lapDurations) {
         this.cancelTimeMeasuringButton.setDisable(true);
         Arduino.getSingletonInstance().removeLapTickHandler();
+        updateDriver(selectedDriver, lapDurations);
         updateStartTimeMeasuringButton();
         this.timeTableController.enableSelection();
         this.deleteDriverButton.setDisable(false);
+    }
+
+    private void updateDriver(final Driver driver, Duration[] lapDurations) {
+        deleteDriver(driver);
+        final int challenges = 4;
+        final int pylons = 2;
+        final Run run = Run.newInstance()
+                .setChallenges(challenges)
+                .setPylons(pylons)
+                .setLapTimes(Arrays.asList(lapDurations));
+
+        if (!driver.getRun1().isPresent()) {
+            Drivers.getInstance().add(driver.setRun1(run));
+        } else if (!driver.getRun2().isPresent()) {
+            Drivers.getInstance().add(driver.setRun2(run));
+        } else {
+            throw new IllegalStateException("Driver already has a record for both runs.");
+        }
+
     }
 }

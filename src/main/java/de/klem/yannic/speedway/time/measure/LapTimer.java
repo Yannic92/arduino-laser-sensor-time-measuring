@@ -25,7 +25,6 @@ public class LapTimer extends AnimationTimer implements LapTickHandler {
     private Integer lapCounter = 0;
     private long startTime;
     private Long lastTick;
-    private boolean running = false;
 
     public LapTimer(final Driver driver, final Label timeLabel, final TimerFinishedHandler timerFinishedHandler) {
         this.driver = driver;

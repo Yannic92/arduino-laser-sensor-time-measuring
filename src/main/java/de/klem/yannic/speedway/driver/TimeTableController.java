@@ -1,27 +1,18 @@
 package de.klem.yannic.speedway.driver;
 
-import de.klem.yannic.speedway.arduino.Arduino;
-import de.klem.yannic.speedway.arduino.event.ConnectivityEvent;
-import de.klem.yannic.speedway.time.measure.LapTimer;
 import de.klem.yannic.speedway.utils.ui.SpeedwayController;
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import java.net.URL;
 import java.time.Duration;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
 
 public class TimeTableController implements SpeedwayController {
@@ -70,17 +61,17 @@ public class TimeTableController implements SpeedwayController {
         driverClass.setCellValueFactory(new PropertyValueFactory<>("driverClass"));
         club.setCellValueFactory(new PropertyValueFactory<>("club"));
         run1Time.setCellValueFactory(driver -> {
-            final Duration summedDuration = driver.getValue().getRun1().getSummedDuration();
+            final Duration summedDuration = driver.getValue().getRun1().map(Run::getSummedDuration).orElse(Duration.ofSeconds(0));
             return new SimpleStringProperty(DurationFormatUtils.formatDuration(summedDuration.toMillis(), "mm:ss:SS"));
         });
-        run1Challenges.setCellValueFactory(driver -> new SimpleStringProperty(String.valueOf(driver.getValue().getRun1().getChallenges())));
-        run1Pylons.setCellValueFactory(driver -> new SimpleStringProperty(String.valueOf(driver.getValue().getRun1().getPylons())));
+        run1Challenges.setCellValueFactory(driver -> new SimpleStringProperty(String.valueOf(driver.getValue().getRun1().map(Run::getChallenges).orElse(0))));
+        run1Pylons.setCellValueFactory(driver -> new SimpleStringProperty(String.valueOf(driver.getValue().getRun1().map(Run::getPylons).orElse(0))));
         run2Time.setCellValueFactory(driver -> {
-            final Duration summedDuration = driver.getValue().getRun2().getSummedDuration();
+            final Duration summedDuration = driver.getValue().getRun2().map(Run::getSummedDuration).orElse(Duration.ofSeconds(0));
             return new SimpleStringProperty(DurationFormatUtils.formatDuration(summedDuration.toMillis(), "mm:ss:SS"));
         });
-        run2Challenges.setCellValueFactory(driver -> new SimpleStringProperty(String.valueOf(driver.getValue().getRun2().getChallenges())));
-        run2Pylons.setCellValueFactory(driver -> new SimpleStringProperty(String.valueOf(driver.getValue().getRun2().getPylons())));
+        run2Challenges.setCellValueFactory(driver -> new SimpleStringProperty(String.valueOf(driver.getValue().getRun2().map(Run::getChallenges).orElse(0))));
+        run2Pylons.setCellValueFactory(driver -> new SimpleStringProperty(String.valueOf(driver.getValue().getRun2().map(Run::getPylons).orElse(0))));
     }
 
     public void setDrivers(final FilteredList<Driver> drivers) {

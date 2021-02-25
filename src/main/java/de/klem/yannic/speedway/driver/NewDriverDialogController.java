@@ -118,7 +118,7 @@ public class NewDriverDialogController implements SpeedwayController {
         String startNumber = startNumberInput.getText();
         String driverClass = classInput.getText();
 
-        drivers.add(new Driver(firstName, lastName, club, startNumber, driverClass, Run.newInstance(), Run.newInstance()));
+        drivers.add(new Driver(firstName, lastName, club, startNumber, driverClass));
         reset();
     }
 

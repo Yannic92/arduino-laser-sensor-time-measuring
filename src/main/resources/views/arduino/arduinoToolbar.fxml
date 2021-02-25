@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-
 <ToolBar fx:id="arduinoToolbar" layoutX="10.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="0.0" prefWidth="1542.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.arduino.ArduinoToolbarController">
     <items>
         <Button fx:id="connectButton" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" text="Arduino verbinden">
