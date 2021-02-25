@@ -5,83 +5,138 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<HBox fx:id="driversRoot" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klem.yannic.speedway.driver.DriversController">
-   <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" HBox.hgrow="ALWAYS">
-         <content>
-             <fx:include fx:id="timeTable" source="timeTable.fxml"/>
-         </content>
-      </ScrollPane>
-      <VBox alignment="BOTTOM_CENTER">
-          <children>
-            <GridPane hgap="20.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-                <Label text="Nachname" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="TOP" />
-                <TextField fx:id="selectedDriverLastName" editable="false" minHeight="25.0" prefHeight="25.0" prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <Label layoutX="20.0" layoutY="80.0" text="Vorname" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-                <TextField fx:id="selectedDriverFirstName" editable="false" layoutX="20.0" layoutY="100.0" minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label layoutX="20.0" layoutY="130.0" text="Verein" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-                <TextField fx:id="selectedDriverClub" editable="false" layoutX="20.0" layoutY="150.0" minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Label layoutX="20.0" layoutY="180.0" text="Startnummer" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-                <TextField fx:id="selectedDriverStartNumber" editable="false" layoutX="20.0" layoutY="200.0" minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Label layoutX="20.0" layoutY="230.0" text="Klasse" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="TOP" />
-                <TextField fx:id="selectedDriverClass" editable="false" layoutX="20.0" layoutY="250.0" minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-               <Button fx:id="deleteDriverButton" disable="true" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#deleteDriver" text="Fahrer löschen" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
-                  <graphic>
-                     <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT" preserveRatio="true">
-                        <image>
-                           <Image url="/icons/delete-driver.png" />
-                        </image>
-                     </ImageView>
-                  </graphic>
-               </Button>
-               <VBox.margin>
-                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-               </VBox.margin>
-            </GridPane>
-            <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="--:--:---" VBox.vgrow="ALWAYS">
-               <font>
-                  <Font size="50.0" />
-               </font>
-            </Label>
-            <HBox>
-               <children>
-                    <Button fx:id="cancelTimeMeasuringButton" cancelButton="true" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#cancelTimeMeasuring" text="Fahrt abbrechen" HBox.hgrow="ALWAYS">
+<HBox fx:id="driversRoot" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="de.klem.yannic.speedway.driver.DriversController">
+    <children>
+        <ScrollPane fitToHeight="true" fitToWidth="true" HBox.hgrow="ALWAYS">
+            <content>
+                <fx:include fx:id="timeTable" source="timeTable.fxml"/>
+            </content>
+        </ScrollPane>
+        <VBox alignment="BOTTOM_CENTER">
+            <children>
+                <GridPane hgap="20.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <Label text="Nachname" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="TOP"/>
+                    <TextField fx:id="selectedDriverLastName" editable="false" minHeight="25.0" prefHeight="25.0"
+                               prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <Label layoutX="20.0" layoutY="80.0" text="Vorname" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                           GridPane.valignment="TOP"/>
+                    <TextField fx:id="selectedDriverFirstName" editable="false" layoutX="20.0" layoutY="100.0"
+                               minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <Label layoutX="20.0" layoutY="130.0" text="Verein" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                           GridPane.valignment="TOP"/>
+                    <TextField fx:id="selectedDriverClub" editable="false" layoutX="20.0" layoutY="150.0"
+                               minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    <Label layoutX="20.0" layoutY="180.0" text="Startnummer" GridPane.columnIndex="0"
+                           GridPane.rowIndex="3" GridPane.valignment="TOP"/>
+                    <TextField fx:id="selectedDriverStartNumber" editable="false" layoutX="20.0" layoutY="200.0"
+                               minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                    <Label layoutX="20.0" layoutY="230.0" text="Klasse" GridPane.columnIndex="0" GridPane.rowIndex="4"
+                           GridPane.valignment="TOP"/>
+                    <TextField fx:id="selectedDriverClass" editable="false" layoutX="20.0" layoutY="250.0"
+                               minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                    <Button fx:id="deleteDriverButton" disable="true" mnemonicParsing="false"
+                            nodeOrientation="LEFT_TO_RIGHT" onAction="#deleteDriver" text="Fahrer löschen"
+                            GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                         <graphic>
-                            <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT" preserveRatio="true">
+                            <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT"
+                                       preserveRatio="true">
                                 <image>
-                                    <Image url="/icons/cancel.png" />
+                                    <Image url="/icons/delete-driver.png"/>
                                 </image>
                             </ImageView>
                         </graphic>
                     </Button>
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="320.0">
-               <children>
-                  <Button fx:id="startTimeMeasuringButton" defaultButton="true" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#startTimeMeasuring" text="Start" HBox.hgrow="ALWAYS">
-                     <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT" preserveRatio="true">
-                           <image>
-                              <Image url="/icons/racing-flag.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </HBox>
-          </children>
-      </VBox>
-   </children>
+                    <VBox.margin>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+                    </VBox.margin>
+                </GridPane>
+                <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308"
+                       maxWidth="1.7976931348623157E308" text="--:--:---" VBox.vgrow="ALWAYS">
+                    <font>
+                        <Font size="50.0"/>
+                    </font>
+                </Label>
+                <GridPane hgap="20.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <Label text="Pylonen" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="TOP"/>
+                    <TextField fx:id="pylons" editable="false" minHeight="25.0" prefHeight="25.0"
+                               prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <Label layoutX="20.0" layoutY="80.0" text="Aufgaben" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                           GridPane.valignment="TOP"/>
+                    <TextField fx:id="challenges" editable="false" layoutX="20.0" layoutY="100.0"
+                               minHeight="25.0" prefWidth="210.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <Button fx:id="finishRunButton" disable="true" mnemonicParsing="false"
+                            nodeOrientation="LEFT_TO_RIGHT" onAction="#finishRun" text="Lauf abschließen"
+                            GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                        <graphic>
+                            <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT"
+                                       preserveRatio="true">
+                                <image>
+                                    <Image url="/icons/checkmark.png"/>
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <VBox.margin>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
+                    </VBox.margin>
+                </GridPane>
+                <HBox>
+                    <children>
+                        <Button fx:id="cancelTimeMeasuringButton" cancelButton="true" disable="true"
+                                maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                nodeOrientation="LEFT_TO_RIGHT" onAction="#cancelTimeMeasuring" text="Fahrt abbrechen"
+                                HBox.hgrow="ALWAYS">
+                            <graphic>
+                                <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="/icons/cancel.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox layoutX="10.0" layoutY="320.0">
+                    <children>
+                        <Button fx:id="startTimeMeasuringButton" defaultButton="true" disable="true"
+                                maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                nodeOrientation="LEFT_TO_RIGHT" onAction="#startTimeMeasuring" text="Start"
+                                HBox.hgrow="ALWAYS">
+                            <graphic>
+                                <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="/icons/racing-flag.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
 </HBox>

@@ -56,6 +56,15 @@ public class DriversController implements SpeedwayController {
     private Label timeLabel;
 
     @FXML
+    private TextField pylons;
+
+    @FXML
+    private TextField challenges;
+
+    @FXML
+    private Button finishRunButton;
+
+    @FXML
     private TimeTableController timeTableController;
 
     private TextField driversFilter;
@@ -66,6 +75,7 @@ public class DriversController implements SpeedwayController {
 
     private LapTimer activeTimer;
 
+    private Run currentRun;
 
     public void setDriversFilter(final TextField driversFilter) {
         this.driversFilter = driversFilter;
@@ -113,7 +123,7 @@ public class DriversController implements SpeedwayController {
     }
 
     private void updateStartTimeMeasuringButton() {
-        if (this.selectedDriver != null && Arduino.getSingletonInstance().isConnected()) {
+        if (this.selectedDriver != null && currentRun == null && Arduino.getSingletonInstance().isConnected()) {
             this.startTimeMeasuringButton.setDisable(false);
         } else {
             this.startTimeMeasuringButton.setDisable(true);
@@ -149,33 +159,45 @@ public class DriversController implements SpeedwayController {
     @FXML
     public void cancelTimeMeasuring() {
         activeTimer.stop();
+        currentRun = null;
     }
 
-    private void finishTimeMeasuring(final Duration[] lapDurations) {
-        this.cancelTimeMeasuringButton.setDisable(true);
-        Arduino.getSingletonInstance().removeLapTickHandler();
-        updateDriver(selectedDriver, lapDurations);
+    @FXML
+    public void finishRun() {
+        this.finishRunButton.setDisable(true);
+        Driver driver = this.selectedDriver;
+        deleteDriver(driver);
+        currentRun = currentRun
+                .setChallenges(Integer.parseInt(challenges.getText()))
+                .setPylons(Integer.parseInt(pylons.getText()));
+        if (!driver.getRun1().isPresent()) {
+            Drivers.getInstance().add(driver.setRun1(currentRun));
+        } else if (!driver.getRun2().isPresent()) {
+            Drivers.getInstance().add(driver.setRun2(currentRun));
+        } else {
+            throw new IllegalStateException("Driver already has a record for both runs.");
+        }
+        currentRun = null;
+        resetPylonsAndChallengesInput();
         updateStartTimeMeasuringButton();
         this.timeTableController.enableSelection();
         this.deleteDriverButton.setDisable(false);
     }
 
-    private void updateDriver(final Driver driver, Duration[] lapDurations) {
-        deleteDriver(driver);
-        final int challenges = 4;
-        final int pylons = 2;
-        final Run run = Run.newInstance()
-                .setChallenges(challenges)
-                .setPylons(pylons)
-                .setLapTimes(Arrays.asList(lapDurations));
-
-        if (!driver.getRun1().isPresent()) {
-            Drivers.getInstance().add(driver.setRun1(run));
-        } else if (!driver.getRun2().isPresent()) {
-            Drivers.getInstance().add(driver.setRun2(run));
-        } else {
-            throw new IllegalStateException("Driver already has a record for both runs.");
-        }
-
+    private void resetPylonsAndChallengesInput() {
+        this.pylons.setEditable(false);
+        this.challenges.setEditable(false);
+        this.pylons.setText("");
+        this.challenges.setText("");
     }
+
+    private void finishTimeMeasuring(final Duration[] lapDurations) {
+        this.cancelTimeMeasuringButton.setDisable(true);
+        Arduino.getSingletonInstance().removeLapTickHandler();
+        currentRun = Run.newInstance().setLapTimes(Arrays.asList(lapDurations));
+        this.pylons.setEditable(true);
+        this.challenges.setEditable(true);
+        this.finishRunButton.setDisable(false);
+    }
+
 }
